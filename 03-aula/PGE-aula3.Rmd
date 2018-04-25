@@ -1,0 +1,685 @@
+---
+title: "Noções Básicas de R - Aula 3"
+in_header: \usepackage{graphicx, color, verbatim, fancyvrb, setspace, amsfonts, amsmath,amssymb}
+output:
+  pdf_document: default
+  html_document: default
+fig_caption: yes
+---
+Exemplo de uso de R + Markdown + knitr
+======================================
+
+Prof. Dr. Cleuler Barbosa das Neves  
+[currículo.lattes](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4786159E2)
+
+AULA N. 03 - OBJETOS: VETORES, MATRIZES, DATA.FRAME, ARRAYS, LIST, DATE, TS etc.
+  
+#**R** é uma Linguagem **funcional** orientada para **objetos**!
+
+#[================================================]
+#[Faz uso de funções & de suas composições     !!! 
+#[Armazena&Manipula objetos previamente criados!!!
+#[*Aply* essas composições nesses *ob-jectos*      !!!
+#[Há *symbols* c/significados operacionais *tipics*!!!
+#[CRAN c/centenas de milhares de *functions* em *packages*!!!
+#[================================================]
+
+```{r pastas e bibliotecas}
+# As "duas" primeiras linhas de comando de um script em R (p. 13) deve ser:
+
+# A 1ª Linha de comando:
+# O símbolo ~ representa a abreviatura para o caminho da pasta pessoal (Linux e Windows)
+#setwd("~") # Aponta o Diretório de Trabalho para a Pasta Pessoal e subpasta em que se encontra o arquivo deste script PGE-aula3.Rmd: "~/../Documents/R_CS/Aula3"
+# Esse comando exibe a seguinte mensagem de alerta importante: "The working directory was changed to C:/Users/M/Documents inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks"
+getwd()    # Exibe  o Diretório de Trabalho, no caso o da Pasta Pessoal, executando uma linha de comando na janela Terminal da Console Area: "C:/Users/M/Documents/R_CS/Aula3"
+setwd("~/../Documents/R_CS/Aula3") # Produz o mesmo efeito do código anterior
+getwd()
+
+# A 2ª Linha de comando: é um exemplo do uso de **funções compostas** em Linguagem **R**
+rm(list=ls()) # Remove toda a list de variáveis da Job Area, i. e., da Environment
+
+#[=========================================================================]
+#[                   Pacotes do System Library                             ]
+#[=========================================================================]
+
+#Pacotes de importação de BD
+#para ativar um pacote do System Library (vem c/a instalação do R): 2.000 f's
+library(foreign) # argumento não precisa das aspas
+# Para carregar Base de Dados dos aplicativos:
+# Minitab, S, SAS, SPSS, Stata, Systat, Weka, dBase ...
+
+#[=========================================================================]
+#[                    Pacotes da User Library                              ]
+#[=========================================================================]
+
+#P/instalar um pacote da web (CRAN) basta executar install.packages() 1 vez
+#install.packages("data.table") # Para carregar BD's de grandes dimensões
+library(data.table) # (p.53-53 do livro R_CS); argumento não precisa das aspas
+# 1- converter o arquivo para .csv usando a função fwf2csv () do pacote descr
+# 2- carregar o BD com a função fread() do pacote data.table, que usa menos
+#    memória que a função read.fwf() do pacote ...
+#install.packages("sqldf") # p/carregar partes de BD's de grandes dimensões
+library(sqldf) # R_SC: (p. 53-54)
+
+#install.packages("descr")#Um pacote tem de ser instalado 1 vez no seu micro
+library(descr) # Ativado o pacote, suas funções são disponibilizadas p/uso
+# "descr" é um pacote com funções voltadas para Estatística Descritiva
+
+#install.packages("gdata")
+library(gdata) # pacote para manipulação de dados (BD's) (p. 45)
+               # No Windows poderá ser necessário instalar ActivePerl
+               # ou outro interpretador da linguagem perl.
+
+#install.packages("igraph") # Océu é o limite!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+library(igraph) # pacote para Network Analysis and Visualization
+                # R_CS: cap. 12- Análise de Redes Sociais (com grafos)
+
+#install.packages("knitr")
+library(knitr) # pacote para geração de Relatório Dinâmico em R (p. 119)
+
+#install.packages("memisc") # para surveys
+library(memisc) # pacote para manipulação de pesquisa de dados (p. 66, 89)
+                # e para apresentação de análises de seus resultados
+
+#install.packages("rgdal") # para exibição de Mapas e dados espacializados
+library(rgdal) # R_SC: cap. 11- Mapas (p. 134-139)
+# Requer a instalação do pacote sp
+#install.packages("sp")
+library(sp)
+
+#install.packages("rmarkdown") # para instalação do RMarkdown
+library(rmarkdown) #R_SC: geração Relatórios Dinâmicos no RStudio(p. 115-19)
+# Requer instalação de outros pacotes p/rodar o RMarkdown dentro do RStudio
+#install.packages("htmltools") - esse não precisou, veio c/o RMarkdown
+library(htmltools) # Ferramentas para HTML
+#install.packages("caTools")#   - esse precisou e instalou o bitops
+library(caTools)#Tools: moving windows statistics, GIF, Base64, ROC AUC etc.
+
+#install.packages(c("bindr", "bindrcpp", "Rcpp", "stringi")) é uma função composta
+library(bindr)# library deve ter package com comprimento 1
+library(bindrcpp)#
+library(Rcpp)#
+library(stringi)#
+#install.packages(c("cluster", "Matrix"), lib="C:/Users/cleuler-bn/Documents/R/R-3.4.4/library")
+library(cluster)#
+library(Matrix)#
+
+#install.packages(c("financial", "FinancialInstrument", "FinancialMath"))
+library(financial)#
+library(FinancialInstrument)#
+library(FinancialMath)#
+
+#install.packages("tinytex")#   - foi preciso instalar para gerar arquivo .pdf direto do RMarkdown
+#library(tinytex)# para carregar o pacote tinytex, que gera arquivo .tex e certamente converte para .pdf
+#                  Mas isso gerou uma v2.pdf no formato de uma janela do PDF, sem os marcadores do lado esquerdo!!!!!
+#                  Do Jeito antigo estava melhor e gravava um .pdf na pasta R_CS/Aula1 que ao abrir no Adobe
+#                  apresentou na parte esquerda da tela do Adobe todos os marcadores das secções do arquivo (melhor)!
+
+#install.packages(c("lattice")) # é uma função composta
+library(grid)# library deve ter package com comprimento 1
+library(lattice)#
+
+# Um *look* na sua **Estação de Trabalho** desta sessão do **R** versão 3.4.3
+sessionInfo()
+
+# Os interessados em assinar a *Lista Brasileira do R* -- [R-br] da **UFPR** devem [acessar](http://listas.inf.ufpr.br/cgi-bin/mailman/listinfo/r-br)
+
+#[=========================================================================]
+#[                                                                         ]
+#[=========================================================================]
+```
+
+# GERANDO UMA BD - AS ALTURAS E PESOS DA TURMA  
+
+##Criando vetores: um <obj> tipo <vctr>
+
+<vctr> é um <obj> fundamental do R; é uma estrutura de dados que permite armazenar um conjunto de valores de um mesmo tipo sob um mesmo nome de <var>.  
+Seus principais tipos são:  
+<num>: <int> <flt> <cplx>  
+<char>  
+<log>  
+<date>  
+O valor NA pode ser armazenado como valor NULL em qualquer um desses tipos.
+A função ``vector()``  cria um vetor do R.  
+Seus *argumentos* são:  *mode* (modo ou *storage mode of an Object*)
+                      e *length* (comprimento do <vctr>).  
+
+Exemplos de uso dessa função.  
+
+# Criando vetores vazios de vários tipos básicos e de um tipo especial
+
+```{r criando vetores vazios}
+#getwd()
+#setwd("~/../R_CS/Aula3")
+
+x <- vector(mode = "character", length = 5)
+y <- vector(mode = "numeric", length = 7)
+z <- vector(mode = "logical", length = 4)
+
+x
+y
+z
+
+Sys.Date()
+hoje<-Sys.Date() # cria um objeto do tipo <Date>, que foi funcionalmente criado (CRAN)
+hoje
+format(hoje, "%d %b %Y") # exibe a data de hoje num formato padrão ISO/ABNT
+
+dezsemanas<-seq(hoje, len = 10, by = "1 week")
+dez.semanas<-seq(hoje, len = 10, by = "1 week")
+rm(dezsemanas)
+dez.semanas
+dez.semanas<-dez.semanas-7
+dez.semanas
+
+#w <- vector(mode = "Date", length = 6) # *Error*
+# porque não é um parâmetro válido para o argumento *mode* da função vector()
+
+# Criando um vetor de datas para servir de rótulos para nossa série temporal experimental
+#dez_semanas<-seq(c("2018-04-11"), len = 10, by = "1 week") # Error
+# Porque "2018-04-11" é um tipo básico <char> e não um tipo especial <Date>.
+# É preciso converter <char> em <Date>. E, claro, há uma função para isso!!!
+dez_semanas<-seq.Date(from = as.Date("2018-04-11"), len = 10, by = "1 week")
+dez_semanas<-seq(from = as.Date("2018-04-11"), len = 10, by = "1 week")
+dez_semanas
+
+# o NA é um valor que pode ser atribuído a uma posição de um vetor de qualquer tipo
+a<-c(1:1000) # Uma composição da função c() com a função seq(), simbolizada pelos :
+sum(a)
+args(sum)
+a[1001]<-NA
+a
+sum(a)
+sum(a, na.rm = TRUE) # 1 NA será removido para não indeterminar a soma de 1000 parcelas
+mean(a)
+mean(a, na.rm = TRUE)# nem sua média
+sd(a)
+sd(a, na.rm = TRUE)  # nem seu desvio padrão (standart desviation)
+###########################################################################################
+# CUIDADO PORQUE UM ÚNICO **NA** NUMA BD PROPAGA SUA CAPACIDADE DE IMPEDIR QUE CÁLCULOS DE ESTATÍSTICA SEJAM PROCESSADOS
+###########################################################################################
+```
+
+# Criando vetores para receber variáveis de uma BD
+
+```{r criar vetores para gerar uma BD}
+nomes<-c("Bernard",
+"Carlos",
+"Cleuler",
+"Helber",
+"Larissa",
+"Mateus",
+"Michell",
+"Nayana",
+"Paula",
+"Rafael",
+"Tatiane",
+"Thiago",
+"Wesley")
+h<-c(1.74,1.63,1.77,1.75,NA,1.85,1.6,NA,1.55,1.7,1.63,1.7,1.75)
+p<-c(63.8,
+79.5,
+81.6,
+81.3,
+49,
+82.7,
+57.6,
+56.3,
+72.4,
+62.1,
+52.6,
+82.1,
+81.9)
+
+dez_semanas[1]
+nomes
+h
+p
+
+```
+
+# Exercícios - Para Resolução em Sala
+
+ Refletir e responder às seguintes questões *pragmáticas*:  
+ 1) Qual a altura média da sua turma de R?  
+ 2) Qual o peso médio da sua turma de R na aula do dia 11 abr. 2018?  
+ 3) Qual o número médio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018?
+ 4) Qual o número médio de caracteres dos prenomes dos alunos matriculados nesta turma de R?
+ 5) Qual o desvio padrão das médias encontradas?  
+ 6) Quem está abaixo e acima da média mais ou menos 1 Desvio Padrão?
+ 7) Calcule o IMC de cada observação do dia 11 abr. 2018.
+
+```{r Estatística Descritiva na Sala de Aula}
+# Invocando as funções mean() e sd() para uma <var> <vector> <num>
+#1) Média e Desvio Padrão (#5) das alturas dos alunos:
+hm<- mean(h, na.rm=TRUE)
+hDP<-sd(h, na.rm=TRUE) # Desvio padrão da altura é uma medida de dispersão dessa variável
+# É uma turma com 8.7 cm de dispersão em torno da altura média de 1.70 m
+# São brasileiros de estatura mediana, gostam muito de..., mas...
+#6) Quem está abaixo e acima da média mais ou menos 1 Desvio Padrão?
+hm
+hDP
+h[h<hm-hDP | h>hm+hDP]
+nomes[h<hm-hDP | h>hm+hDP] # Eis os outliers da estatura de nossa turma.
+
+#2) Média e Desvio Padrão (#5) dos pesos dos alunos:
+pm<- mean(p, na.rm=TRUE) # É uma uma turma de magros!!! Conclusão precipitada?
+pDP<-sd(p, na.rm=TRUE)
+# A média do peso da turma no dia 11 abr. 2018 é de 69.5 Kg
+# O Desvio Padrão dessas 13 obsevrações de peso   = 12.9 Kg
+#6) Quem está abaixo e acima da média mais ou menos 1 Desvio Padrão?
+p[p<pm-pDP | p>pm+pDP]
+nomes[p<pm-pDP | p>pm+pDP] # Eis os outliers da nossa turma.
+
+#3) Número médio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018 e seu Desvio Padrão (#5)
+mean(length(nomes))
+sd(mean(length(nomes))) # retorna um NA. Por que?
+nomes
+tam_nomes<-length(nomes) # cuidado porque retorna o comprimento do vetor names = 13!!!
+tam_nomes<-nchar(nomes, keepNA = NA)
+tam_nomes
+tam_nomes_media<-mean(tam_nomes)
+tam_nomes_media
+tam_nomes_DP   <-sd(tam_nomes)
+tam_nomes_DP
+#6) Quem está abaixo e acima da média mais ou menos 1 Desvio Padrão?
+tam_nomes[tam_nomes<tam_nomes_media-tam_nomes_DP | tam_nomes>tam_nomes_media+tam_nomes_DP]
+nomes[tam_nomes<tam_nomes_media-tam_nomes_DP | tam_nomes>tam_nomes_media+tam_nomes_DP] # Eis os nomes daqueles com tamanhos de nomes outliers da nossa turma.
+
+#7) Cálculo do IMC de cada observação do dia 11 abr. 2018.
+#O cálculo do IMC é feito dividindo o peso (em quilogramas) pela altura (em metros) elevada ao quadrado.
+IMC<-p/h^2
+IMC
+IMC_m<- mean(IMC, na.rm=TRUE) # É uma uma turma de magros!!! Conclusão precipitada?
+IMC_m # = 25.17 Kg/m2     # O IMC médio da turma indica ligeiramente acima do peso normal
+IMC_DP<-sd(IMC, na.rm=TRUE)
+IMC_DP# =  3.61 Kg/m2
+IMC[IMC<18.5 | IMC>=25]
+nomes[IMC<18.5 | IMC>=25] # Revelar ou não revelar. Eis a questão!!!!!!!!!!!!!!!!!!!!!!!!!!
+# cut() Convert Numeric <num> to Factor <fctr>
+###########################################################################################
+# CUIDADO PORQUE UM ÚNICO ERRO DE SINTAXE FAZ COM QUE O COMPILADOR INTERROMPA A EXECUÇÃO DO SRCIPT (CÓDIGO FONTE)  #
+###########################################################################################
+``` 
+ 
+ Exercíco da Aula n. 2:
+ 8) Redija e salve um script para a função linear em **R**. Gere um gráfico para essa função no intervalo [0,5] e salve-o no formato .pdf.  
+
+```{r reta}
+
+###########################################################################################
+# TENTATIVAS E  ERROS PARA GERAR UM GRÁFICO y=f(x)=a.x + b 
+#
+# IMPORTANDO UM ARQUIVO FEITO PELO BERNARD E CONVERTENDO-O DE UTF-8 PARA WINDOWS-1252
+#
+###########################################################################################
+
+library(descr)
+library(stats)
+getwd()
+#linhas<-readLines("Plottar_grafico.R")
+#linhas<-fromUTF8(linhas)
+#writeLines(linhas, "Plotar_grafico-win.R")
+
+#Script desenvolvido para criar graficos
+#Criar função da equação da reta > y = ax+b
+#------------------Parametros------------------
+#     a = Coeficiente linear
+#     b = Coeficiente Angular
+#     x = Vetor de valores no Eixo X
+#     y = Vetor de valores no Eixo Y
+
+#Cria funcao que representa a equacao da reta
+linear <- function(a,b,x){
+  y <- a*x + b
+  return(y)
+}
+
+a <- 1.5 #Coeficiente linear
+b <- 0.5 #Coeficiente angular
+
+#x < 1:10 #Vetor de valores do Eixo X # HAVIA UM ERROR. NÃO DE SINTAXE, MAS DE PROGRAMAÇÃO
+x <- 1:10 #Vetor de valores do Eixo X
+
+#y <- linear(x) # OCORREU OUTRO ERROR. AO CHAMAR A FUNÇÃO linear()
+y <- linear(a,b,x) # é preciso repassar os parâmetros dos argumentos a e b da função
+
+print(y) #Mostrar os valores do Eixo Y
+
+#Parametros do plot
+#     main = Titulo do grafico
+#     ylab = Nome do Eixo Y
+#     xlab = Nome do Eixo X
+#     type = Tipo de plotagem > l = linha,p = pontos, h = histograma
+plot(x,y,main='Gráfico Curso R',ylab='Eixo y',xlab='Eixo x',type='o')
+
+
+# Redesenhando o mesmo Gráfico
+x <- 0:10 #Vetor de valores do Eixo X
+y <- linear(a,b,x) # é preciso repassar os parâmetros dos argumentos a e b da função
+print(y) #Mostrar os valores do Eixo Y
+
+y1 <- linear(2,0,x)
+y2 <- linear(0.5,0,x)
+
+plot.new()
+plot(x,y,xlim=c(0,10),ylim=c(0,16),main='Gráfico Curso R',ylab='y',xlab='x',type='o')
+#lines(x,y1, col="blue") # Error: plot.new has not been called yet
+#lines(x,y2, col="red")
+
+``` 
+Exercícios remanescentes da Aula n. 01:  
+ 9) Apresente duas funções lineraes que sejam inversas. Plote-as juntamente com a função identidade.
+ 10) Descrever os tipos de variáveis geradas na Job Area e suas características.
+   
+  **Trabalho Final do curso:  **
+  Na primeira aula registrar a altura declarada e medir e registrar o peso de cada aluno, que poderá identificar-se com um apelido.  
+  Em cada aula medir e registrar numa BD o peso de cada aluno numa sequencia aleatória.  
+  Calcular o IMC de cada observação e apontar para os IMC's abaixo ou acima da faixa recomendada pela literatura médica.  
+  Calcular a média e o desvio padrão do IMC da população observada; detectar os pontos *outliers*.  
+  Gerar um série temporal, com período de 7 dias, ao longo dos nossos 10 encontros.  
+  Tratar eventuais NA's.  
+  *Descrever* a variação do IMC médio da turma ao longo do curso, dado que será feito um apelo geral para aqueles acima da média para tentarem reduzi-lo nas próximas 10 semanas.  
+  Fazer uma regressão linear do IMC médio em função do tempo analisando se ele sofreu alguma variação estatisticamente significativa.  
+  *Inferir* qual resultado seria alcançado se o curso durasse 20 semanas.  
+  
+
+#Objetos
+
+##Vetores
+
+Conjunto de elementos do mesmo tipo (logical, numeric, integer, double, character)
+
+1. A forma mais simples de se criar um vetor é usar a  função de concatenação ``c()``.
+
+```{r}
+value.num  = c(3,4,2,6,20)
+
+value.num
+
+value.char = c("koala", "kangaroo")
+
+value.char
+
+value.logical = c(FALSE, FALSE, TRUE, TRUE)
+
+value.logical
+```
+
+2. Segunda maneira de criar vetor no R: usando a  função ``scan``
+
+```{r}
+values = scan(text="
+2
+3
+4
+5"
+)
+
+values
+```
+3. Outra opção usando comando ``rep``
+
+```{r}
+rep(1,5)
+
+rep(c(1,2),3)
+
+rep(c(1,6),each=3)
+
+rep(c(1,6),c(3,5))
+
+```
+4. Outra opção usando comando ``seq``
+
+```{r}
+seq(from=1,to=5)
+
+seq(from=1, to=5, by=0.1)
+
+seq(from=1, to=5, length=10)
+
+rep(seq(from=1, to=5, length=10),each=3)
+
+
+```
+5. Outra opção usando comando ``:``
+
+```{r}
+
+1:5
+
+c(1:5,10)
+
+
+```
+
+
+## Operações com Vetores
+
+```{r}
+
+x = 1:4
+
+y = 5:8
+
+x + y
+
+2*x +1
+
+x * y
+
+x / y
+
+log(x)
+
+log(x,10)
+
+sum(x)
+
+mean(x)
+
+prod(x)
+
+var(x)
+
+```
+
+
+```{r}
+# O que é um vetor do tipo factor
+# usado para variáveis categóricas
+# Que apresenta vávios Levels (níveis)
+# Comumente cada nível recebe um nome gerando um conjunto denominado Labels
+
+# Exemplo: No nosso estudo de caso seria interessante separar os dados amostrado segundo o sexo biológico de cada obsevração, porque biologicamente seres humanos XY tam estatura média superioe às dos XX. Logo também o IMC deve ser tratado para cada subgrupo separadamente.
+
+s<-c("m","m","m","m","f","m","m","f","f","m","f","m","m")
+s # um <vctr> do tipo <chr>
+mode(s)
+class(s)
+length(s)
+summary(s)
+str(s)
+dput(s)
+
+# Transformando numa variável factor <fctr>
+s<-as.factor(s) # Destroi <chr> e recria o vetor s como um <fctr>
+s
+mode(s) # é um vetor do tipo <numeric>
+class(s) # é um factor <fctr>, que é um caso especial de <numeric> indexado a Labels
+length(s)
+summary(s)
+str(s) # investigando a structure da variável s do tipo <fctr>
+dput(s)
+
+table(s) # retorna um vetor tipo <fctr> com a frequência de cada um dos níveis (Levels) ou categorias do vetor que é repassado como parâmetro do argumento da função table()
+# Essa mesma função é usada para retornar tabulações cruzadas (cross table) de duas variáveis categóricas
+max(h, na.rm = TRUE)
+hcat <- cut(h,c(0,1.6,1.7,2.0),labels = c("Baixo","Médio","Alto"))
+# função cat() Convert Numeric to Factor
+str(hcat)
+dput(hcat)
+table(hcat,s)
+hm
+ct<-table(hcat,s)
+prop.table(ct,1)
+prop.table(ct,2)
+prop.table(ct)
+100*prop.table(ct)
+# Analisando o resultados dessas cross tables p.u. vê-se que o IMC deve ser categorizado em feminino (XX) e masculino (XY)
+
+# Calculando a altura média das observações s == f
+s=="f"
+h[s=="f"]
+mean(h[s=="f"], na.rm=TRUE) # é média da estatura do sexo feminino  = 1.59 m
+mean(h[s=="m"], na.rm=TRUE) # é média da estatura do sexo masculino = 1.72 m
+
+# Exibindo essa diferença graficamente
+boxplot(h~s) # homens são, em média, mais alto que as mulheres
+boxplot(p~s) # homens são, em média, mais pesados que as mulheres
+
+# Esses gráficos corroboram uma Hipótese de estratificação f & m para analisar o IMC?????
+# Duvidar é preciso.
+# Transformar sua dúvida nums hipótese testável.
+# E testar adequadamente a Hipótese **contra** as observações colhidas no campo.
+
+boxplot(IMC~s)
+
+```
+
+
+##Matriz
+
+Conjunto de elementos dispostos em linhas e colunas, em que todos os elementos são do mesmo tipo
+
+```{r}
+mat.num  = matrix(c(1:16),4,4)
+
+mat.num
+
+mat.char = matrix(LETTERS[1:4],2,2)
+
+mat.char
+
+
+```
+
+
+#Manipulando Matrizes
+
+
+```{r}
+
+#Criando nomes para as linhas de uma matriz
+
+rownames(mat.num) = c("Sao Paulo", "Americana", "Piracicaba", "Madson" )
+
+colnames(mat.num) = 1:4
+
+mat.num
+
+#Multiplicação elemento a elemento
+
+mat.num2 = diag(seq(10,40,by=10))
+
+mat.num2
+
+mat.num3 = mat.num * mat.num2
+
+mat.num3
+
+#Multiplicação de Matrizes
+
+iden = diag(4)
+
+iden
+
+mat.num%*%iden
+
+#Acessando elementos das matrizes 
+
+#Um elemento
+mat.num[1,1]
+
+#Linhas 
+mat.num[1,]
+
+#Colunas
+mat.num[,3]
+
+#Sub Matrizes
+
+mat.num[c(1,3,4), c(2,1,4)]
+
+mat.num[c(T,F,T,T), c(T,T,F,T)]
+
+mat.num[-c(1,3,4), -c(2,1,4)]
+
+```
+
+#Data.frames
+
+São similares às matrizes no entanto permite que as colunas tenham diferentes tipos
+
+
+```{r}
+
+data(iris)
+
+iris
+
+iris$Sepal.Length
+
+iris$Renato = TRUE
+
+iris
+
+```
+
+
+#Arrays
+
+São vetores formados por dataframes, "matrizes que permitem que suas colunas tenham diferentes tipos de variáveis <chr> <int> <flt> <fctr> <Date> etc.
+
+
+```{r}
+
+# Construindo um exemplo
+a<- array(1:50, dim = c(2,5,5))
+a
+
+```
+
+
+#List
+
+Generalização dos vetores no sentido de que uma lista é uma coleção de objetos de tipos os mais variados
+
+
+```{r}
+dados<-c(rep(1:4, 2, each = 2))
+A = list(x = 1:4, y = matrix(1:4,2,2), w = dados, v = list(B=4,C=5))
+
+A
+
+A[[1]]
+
+A[[4]]
+
+A$x
+
+A$y
+
+A$w
+
+A$v
+
+B = list(s = 1:5, r = 2)
+
+Q = c(A,B)
+
+Q
+
+```
+

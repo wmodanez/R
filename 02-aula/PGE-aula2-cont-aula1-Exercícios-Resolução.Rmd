@@ -1,0 +1,531 @@
+---
+title: "Noções Básicas de R - Aula 1"
+in_header: \usepackage{graphicx, color, verbatim, fancyvrb, setspace, amsfonts, amsmath,amssymb}
+output:
+  pdf_document: default
+  html_document: default
+fig_caption: yes
+---
+Exemplo de uso de R + Markdown + knitr
+======================================
+
+Prof. Dr. Cleuler Barbosa das Neves  
+[currículo.lattes](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4786159E2)
+
+AULA N. 02 - REVISÃO E RESOLUAÇÃO DE EXERCÍCIOS
+  
+#Com a perna no Mundo...As funções... e seus pacotes!
+
+#[================================================]
+#[A 1ª faz CRAN! A 2ª faz CRAN! E CRAN, CRAN, CRAN!!!
+#[================================================]
+
+```{r bibliotecas}
+setwd("~/R_CS/Aula2")
+#[=========================================================================]
+#[                   Pacotes do System Library                             ]
+#[=========================================================================]
+
+#Pacotes de importação de BD
+#para ativar um pacote do System Library (vem c/a instalação do R): 2.000 f's
+library(foreign) # argumento não precisa das aspas
+# Para carregar Base de Dados dos aplicativos:
+# Minitab, S, SAS, SPSS, Stata, Systat, Weka, dBase ...
+
+#[=========================================================================]
+#[                    Pacotes da User Library                              ]
+#[=========================================================================]
+
+#P/instalar um pacote da web (CRAN) basta executar install.packages() 1 vez
+#install.packages("data.table") # Para carregar BD's de grandes dimensões
+library(data.table) # (p.53-53 do livro R_CS); argumento não precisa das aspas
+# 1- converter o arquivo para .csv usando a função fwf2csv () do pacote descr
+# 2- carregar o BD com a função fread() do pacote data.table, que usa menos
+#    memória que a função read.fwf() do pacote ...
+#install.packages("sqldf") # p/carregar partes de BD's de grandes dimensões
+library(sqldf) # R_SC: (p. 53-54)
+
+#install.packages("descr")#Um pacote tem de ser instalado 1 vez no seu micro
+library(descr) # Ativado o pacote, suas funções são disponibilizadas p/uso
+# "descr" é um pacote com funções voltadas para Estatística Descritiva
+
+#install.packages("gdata")
+library(gdata) # pacote para manipulação de dados (BD's) (p. 45)
+               # No Windows poderá ser necessário instalar ActivePerl
+               # ou outro interpretador da linguagem perl.
+
+#install.packages("igraph") # Océu é o limite!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+library(igraph) # pacote para Network Analysis and Visualization
+                # R_CS: cap. 12- Análise de Redes Sociais (com grafos)
+
+#install.packages("knitr")
+library(knitr) # pacote para geração de Relatório Dinâmico em R (p. 119)
+
+#install.packages("memisc") # para surveys
+library(memisc) # pacote para manipulação de pesquisa de dados (p. 66, 89)
+                # e para apresentação de análises de seus resultados
+
+#install.packages("rgdal") # para exibição de Mapas e dados espacializados
+library(rgdal) # R_SC: cap. 11- Mapas (p. 134-139)
+# Requer a instalação do pacote sp
+#install.packages("sp")
+library(sp)
+
+#install.packages("rmarkdown") # para instalação do RMarkdown
+library(rmarkdown) #R_SC: geração Relatórios Dinâmicos no RStudio(p. 115-19)
+# Requer instalação de outros pacotes p/rodar o RMarkdown dentro do RStudio
+#install.packages("htmltools") - esse não precisou, veio c/o RMarkdown
+library(htmltools) # Ferramentas para HTML
+#install.packages("caTools")#   - esse precisou e instalou o bitops
+library(caTools)#Tools: moving windows statistics, GIF, Base64, ROC AUC etc.
+
+#install.packages(c("bindr", "bindrcpp", "Rcpp", "stringi"))
+library(bindr)# library deve ter package com comprimento 1
+library(bindrcpp)#
+library(Rcpp)#
+library(stringi)#
+#install.packages(c("cluster", "Matrix"), lib="C:/Users/cleuler-bn/Documents/R/R-3.4.4/library")
+library(cluster)#
+library(Matrix)#
+
+#install.packages(c("financial", "FinancialInstrument", "FinancialMath"))
+library(financial)#
+library(FinancialInstrument)#
+library(FinancialMath)#
+
+#install.packages("tinytex")#   - foi preciso instalar para gerar arquivo .pdf direto do RMarkdown
+#library(tinytex)# para carregar o pacote tinytex, que gera arquivo .tex e certamente converte para .pdf
+#                  Mas isso gerou uma v2.pdf no formato de uma janela do PDF, sem os marcadores do lado esquerdo!!!!!
+#                  Do Jeito antigo estava melhor e gravava um .pdf na pasta R_CS/Aula1 que ao abrir no Adobe
+#                  apresentou na parte esquerda da tela do Adobe todos os marcadores das secções do arquivo (melhor)!
+#[=========================================================================]
+#[                                                                         ]
+#[=========================================================================]
+```
+
+
+# rEVISÃO - Acessando e definindo funções  
+
+##Função function()
+
+A função ``function()``  é uma das principais funções do R;  
+Ela traz em si a base em que a própria Linguagem R encontra-se entruturada.
+Uma função, uma vez definida, pode receber argumentos e pode retornar resultados ou valores através da função return(value).
+Principais *argumentos* da função:  arglist.
+
+Exemplo de definição e uso de uma função.  
+Q1) Como elaborar uma função em R para obter o resultado da série: somatório x${_{i}}$, para i = 1 à n, n inteiro diferente de zero. 
+
+${\displaystyle \sum _{i=1}^{n}x_{i}=x_{1}+x_{2}+\cdots +x_{n}}$  
+
+Resposta
+```{r soma}
+setwd("~/R_CS/Aula2")
+somatoria <- function(x){
+  n<-length(x)
+  s<-0
+  for (i in 1:n) {
+    s<-s+x[i]
+  }
+  s
+}
+
+# Invocando a função somatória para uma <var> <vector> <num>
+a<-1
+somatoria(a)
+a<-c(1,2,3)
+y<-somatoria(a)
+a<-c(1:4)
+somatoria(a)
+a<-c(1:1000)
+somatoria(a)
+sum(a)
+args(sum)
+a[1001]<-NA
+a
+somatoria(a)
+sum(a)
+sum(a, na.rm = TRUE) # 1 NA será removido para não indeterminar a soma de 1000 parcelas
+mean(a, na.rm = TRUE)# nem sua média
+sd(a)
+sd(a, na.rm = TRUE)  # nem seu desvio padrão (standart desviation)
+####################################################################################################################
+# CUIDADO PORQUE UM ÚNICO NA NUMA BD PROPAGA SUA CAPACIDADE DE IMPEDIR QUE CÁLCULOS DE ESTATÍSTICA SEJAM PROCESSADOS
+####################################################################################################################
+```
+
+# help - PEDINDO SOCORRO: ao próprio R e à web
+
+```{r}
+help() # por ?
+help.start()
+args(setwd)
+help(demo)
+?q
+args(apropos)
+?apropos
+apropos("csv") # Qual o tipo do seu arg? É diferente do argumento de args?
+args(help.search)
+?help.search
+#help.search("install") # Não quis funcionar!!!
+??install.packages
+??network
+#RSiteSearch("social network analysis") # Não quis funcionar!!!
+example("ls") # O que significa a abreviatura ls? # Não quis funcionar!!!
+??demo
+#demo("graphics")# Não quis funcionar!!!
+```
+
+# Exercícios - Resolução em Sala
+
+ Refletir e responder às seguintes questões *pragmáticas*:  
+ 1) Olhando para o código (*script*) da função somatoria quais regras sintáticas (estruturais) pode-se extrair do uso dos parenteses, chaves e colchetes na Linguagem R?  
+ 
+parenteses: delimitam o início e o fim de um conjunto de parâmetros, separados por vírgula, de uma função.
+chaves    : delimitam o início e o fim de um conjunto de comandos;
+            o final de um comando demarca o início de outro;
+            para uma melhor documentação e leitura do código do script, separamos as linhas de comando com <enter>.
+            linhas de comando não são separadas por vírgula;
+            a execução ou aplicação de uma função para um dado parâmetro é uma linha de comando;
+            a definição de uma função dá-se pela execução da função denominada: function().
+            um dos principais comando do R é o de atribuição: <-
+            sua aplicação difere muito do conhecido resultado que o símbolo de igual "=" produz na Álgebra.
+ colchetes: delimitam o início e o fim dos index de um vetor, uma matris ou um data.frame qualquer.
+ 
+R-1: Argumentos virão entre parenteses, separados por vírgula; quando à esquerda do sinal de = ser-lhe-á atribuído o valor à direita.
+R-2 ...
+ 
+ 
+ 2) Idem para a vírgula e o símbolo de =?  
+ 
+ 
+ 
+ 3) Diferencie: funções, objetos, comandos, símbolos e operadores da Linguagem R.  Exemplifique.  
+ 
+ 
+ 4) A expressão =!===? é uma *wff* (*well formuled formula*)? Ela faz sentido em Linguagem R? Ou nalguma outra?  
+ 
+ 
+ 5) Se faz, qual o *significado* desse conjunto de *significantes*? Se não, qual rearranjo desses *símbolos* seria capaz de conferir-lhe algum *sentido*? Quiçá aquele que teria implicitamente desejado?  
+ 
+ 
+ 6) Olhando para o mesmo *script* da função somatoria extraia e formule outras regras sintáticas que estruturam o uso da Linguagem R.  
+
+R-2: À variável indicada à esquerda do comando de atribuição, cujo símbolo é "<-"", quando executada a respectiva linha de comando, o R associará uma posição da memória de trabalho com o valor que resultar da expressão situada à direita do mesmo comando.  
+
+R-3: o símbolo de dois pontos serve para gerar uma sequencia numérica inteira iniciada pelo valor à sua esquerda e terminada pelo valor a sua direita.
+
+ 7) Elabore um código para a função identidade na reta. Gere  um gráfico para essa função no intervalo [0,5].  
+
+```{r identidade}
+setwd("~/R_CS/Aula2")
+id <- function(x) # Início da definição da função identidade
+{
+  if (is.double(x)|is.integer(x)) { y<-x } else {cat(y<-"Parâmetro repassado não é uma variável real\n")}
+  y
+} #################  Final da definição da função identidade, que retorna o valor de y=x, se x é um vetor ou matriz real
+
+# Invocando a função identidade para uma <var> <vector> <num>
+a<-1
+id(a)
+a<-c(1,2,3)
+id(a)
+a<-c(1:4)
+id(a)
+a<-c(1:1000)
+id(a)
+x<--1:10
+y<-id(x)
+x,y
+x
+y
+print (c(x,y))
+####################################################################################################################
+# CUIDADO PORQUE UM ÚNICO ERRO DE SINTAXE FAZ COM QUE O COMPILADOR INTERROMPA A EXECUÇÃO DO SRCIPT (CÓDIGO FONTE)  #
+####################################################################################################################
+``` 
+ 
+ 
+ 8) Redija e salve um script para a função linear em **R**. Gere um gráfico para essa função no intervalo [0,5] e salve-o no formato .pdf.  
+
+```{r reta}
+setwd("~/R_CS/Aula2")
+linear <- function(a, b, x) # Início da definição da função linear (reta) num plano cartesiano y = a.x + b
+                            # a = parâmetro que indica o coeficiente angular da reta
+                            # b = parâmetro que indica o coeficiente linear  da reta
+                            # x = parâmetro que indica o conjunto de valores em a função será aplicada
+{
+  y<- a * x + b
+  y
+} #################  Final da definição da função linear, que retorna o valor de y=a.x+b, se x é um vetor ou matriz real
+
+# Invocando a função linear para uma <var> <vector> <num>
+a<-1
+b<-0        # Replica a função identidade 
+x<-(-1:10)
+linear(a,b,x)
+
+a<-1/2
+b<-0
+x<-c(1,2,3)
+linear(a,b,x)
+
+a<-1+1/2
+b<-0
+x<-c(1,2,3)
+linear(a,b,x)
+
+a<-1/2
+b<-2
+x<-c(1,2,3,4,5)
+linear(a,b,x)
+
+####################################################################################################################
+# TENTATIVAS E  ERROS PARA GERAR UM GRÁFICO y=f(x)=a.x + b #
+####################################################################################################################
+
+plot(x,linear(a,b,x))
+library(graphics)
+#plot.new()
+abline(b,a,untf = FALSE)
+abline(x[1],linear(a,b,x)[1],x[5],linear(a,b,x)[5]) # Não funciona dentro do RMarkdown
+
+``` 
+
+
+ 9) Apresente duas funções lineraes que sejam inversas. Plote-as juntamente com a função identidade.
+ 10) Descrever os tipos de variáveis geradas na Job Area e suas características.
+   
+  **Trabalho Final do curso:  **
+  Na primeira aula registrar a altura declarada e medir e registrar o peso de cada aluno, que poderá identificar-se com um apelido.  
+  Em cada aula medir e registrar numa BD o peso de cada aluno numa sequencia aleatória.  
+  Calcular o IMC de cada observação e apontar para os IMC's acima da faixa recomendada pela literatura médica.  
+  Calcular a média e o desvio padrão do IMC da população observada; detectar os pontos *outliers*.  
+  Gerar um série temporal, com período de 7 dias, ao longo dos nossos 10 encontros.  
+  Tratar eventuais NA's.  
+  *Descrever* a variação do IMC médio da turma ao longo do curso, dado que será feito um apelo geral para aqueles acima da média para tentarem reduzi-lo nas próximas 10 semanas.  
+  Fazer uma regressão linear do IMC médio em função do tempo analisando se ele sofreu alguma variação estatisticamente significativa.  
+  *Inferir* qual resultado seria alcançado se o curso durasse 20 semanas.  
+  
+
+
+#Objetos
+
+##Vetores
+
+Conjunto de elementos do mesmo tipo (logical, numeric, integer, double character)
+
+1. A forma mais simples de se criar um vetor é usar a  função de concatenação ``c()``.
+
+```{r}
+value.num  = c(3,4,2,6,20)
+
+value.num
+
+value.char = c("koala", "kangaroo")
+
+value.char
+
+value.logical = c(FALSE, FALSE, TRUE, TRUE)
+
+value.logical
+```
+
+2. Segunda maneira de criar vetor no R: usando a  função ``scan``
+
+```{r}
+values = scan(text="
+2
+3
+4
+5"
+)
+
+values
+```
+3. Outra opção usando comando ``rep``
+
+```{r}
+rep(1,5)
+
+rep(c(1,2),3)
+
+rep(c(1,6),each=3)
+
+rep(c(1,6),c(3,5))
+
+```
+4. Outra opção usando comando ``seq``
+
+```{r}
+seq(from=1,to=5)
+
+seq(from=1, to=5, by=0.1)
+
+seq(from=1, to=5, length=10)
+
+rep(seq(from=1, to=5, length=10),each=3)
+
+
+```
+5. Outra opção usando comando ``:``
+
+```{r}
+
+1:5
+
+c(1:5,10)
+
+
+```
+
+
+## Operações com Vetores
+
+```{r}
+
+x = 1:4
+
+y = 5:8
+
+x + y
+
+2*x +1
+
+x * y
+
+x / y
+
+log(x)
+
+log(x,10)
+
+sum(x)
+
+mean(x)
+
+prod(x)
+
+var(x)
+
+```
+
+##Matriz
+
+Conjunto de elementos dispostos em linhas e colunas, em que todos os elementos são do mesmo tipo
+
+```{r}
+mat.num  = matrix(c(1:16),4,4)
+
+mat.num
+
+mat.char = matrix(LETTERS[1:4],2,2)
+
+mat.char
+
+
+```
+
+#Manipulando Matrizes
+
+
+```{r}
+
+#Criando nomes para as linhas de uma matriz
+
+rownames(mat.num) = c("Sao Paulo", "Americana", "Piracicaba", "Madson" )
+
+colnames(mat.num) = 1:4
+
+mat.num
+
+#Multiplicação elemento a elemento
+
+mat.num2 = diag(seq(10,40,by=10))
+
+mat.num2
+
+mat.num3 = mat.num * mat.num2
+
+mat.num3
+
+#Multiplicação de Matrizes
+
+iden = diag(4)
+
+iden
+
+mat.num%*%iden
+
+#Acessando elementos das matrizes 
+
+#Um elemento
+mat.num[1,1]
+
+#Linhas 
+mat.num[1,]
+
+#Colunas
+mat.num[,3]
+
+#Sub Matrizes
+
+mat.num[c(1,3,4), c(2,1,4)]
+
+mat.num[c(T,F,T,T), c(T,T,F,T)]
+
+mat.num[-c(1,3,4), -c(2,1,4)]
+
+```
+
+#Data.frames
+
+São similares às matrizes no entanto permite que as colunas tenham diferentes tipos
+
+
+```{r}
+
+data(iris)
+
+iris
+
+iris$Sepal.Length
+
+iris$Renato = TRUE
+
+iris
+
+```
+
+
+#List
+
+Generalização dos vetores no sentido de que uma lista é uma coleção de objetos
+
+
+```{r}
+dados<-c(rep(1:4, 2, each = 2))
+A = list(x = 1:4, y = matrix(1:4,2,2), w = dados, v = list(B=4,C=5))
+
+A
+
+A[[1]]
+
+A[[4]]
+
+A$x
+
+A$y
+
+A$w
+
+A$v
+
+B = list(s = 1:5, r = 2)
+
+Q = c(A,B)
+
+Q
+
+```
+
