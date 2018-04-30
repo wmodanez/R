@@ -2,10 +2,10 @@
 title: 'No√ß√µes B√°sicas de R - Aula 4'
 in_header: \usepackage{graphicx, color, verbatim, fancyvrb, setspace, amsfonts, amsmath,amssymb}
 output:
-  html_document: default
+  pdf_document: default
   slidy_presentation: default
   ioslides_presentation: default
-  pdf_document: default
+  html_document: default
   beamer_presentation: default
   word_document: default
 fig_caption: yes
@@ -14,42 +14,42 @@ Exemplo de uso de R + Markdown + knitr
 ======================================
 
 Prof. Dr. Cleuler Barbosa das Neves  
-[currÌculo.lattes](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4786159E2)
+[curr√≠culo.lattes](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4786159E2)
 
 AULA N. 04 - OBJETOS: *VETORES*, **MATRIZES**, **DATA.FRAME**, ARRAYS, **LIST**, *DATE*, TS, LM etc.
   
-#**R** È uma Linguagem **funcional** orientada para **objetos**!
+#**R** √© uma Linguagem **funcional** orientada para **objetos**!
 
 #[================================================]
-#[Faz uso de funÁıes & de suas composiÁıes     !!! 
+#[Faz uso de fun√ß√µes & de suas composi√ß√µes     !!! 
 #[Armazena&Manipula objetos previamente criados!!!
-#[*Aply* essas composiÁıes nesses *ob-jectos*      !!!
-#[H· *symbols* c/significados operacionais *tipics*!!!
+#[*Aply* essas composi√ß√µes nesses *ob-jectos*      !!!
+#[H√° *symbols* c/significados operacionais *tipics*!!!
 #[CRAN c/centenas de milhares de *functions* em *packages*!!!
 #[================================================]
 
 ```{r pastas_e_bibliotecas}
 # As "duas" primeiras linhas de comando de um script em R (p. 13) deveriam ser:
 
-# A 1™ Linha de comando:
-# O sÌmbolo ~ representa a abreviatura para o caminho da pasta pessoal (Linux e Windows)
-#setwd("~") # Aponta o DiretÛrio de Trabalho para a Pasta Pessoal e subpasta em que se encontra o arquivo deste script PGE-aula3.Rmd: "~/../Documents/R_CS/Aula3"
+# A 1¬™ Linha de comando:
+# O s√≠mbolo ~ representa a abreviatura para o caminho da pasta pessoal (Linux e Windows)
+#setwd("~") # Aponta o Diret√≥rio de Trabalho para a Pasta Pessoal e subpasta em que se encontra o arquivo deste script PGE-aula3.Rmd: "~/../Documents/R_CS/Aula3"
 # Esse comando exibe a seguinte mensagem de alerta importante: "The working directory was changed to C:/Users/M/Documents inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks"
-getwd()    # Exibe  o DiretÛrio de Trabalho, no caso o da Pasta Pessoal, executando uma linha de comando na janela Terminal da Console Area: "C:/Users/M/Documents/R_CS/Aula3"
-#setwd("~/../Documents/R_CS/Aula3") # Produz o mesmo efeito do cÛdigo anterior
+getwd()    # Exibe  o Diret√≥rio de Trabalho, no caso o da Pasta Pessoal, executando uma linha de comando na janela Terminal da Console Area: "C:/Users/M/Documents/R_CS/Aula3"
+#setwd("~/../Documents/R_CS/Aula3") # Produz o mesmo efeito do c√≥digo anterior
 #getwd()
 
-# A 2™ Linha de comando: È um exemplo do uso de **funÁıes compostas** em Linguagem **R**
-code<-0 # somente ir· resetar a Job Area se code == 1
-if(code==1) rm(list=ls()) # Remove toda a list de vari·veis da Job Area, i. e., d· um reset na Environment
+# A 2¬™ Linha de comando: √© um exemplo do uso de **fun√ß√µes compostas** em Linguagem **R**
+code<-0 # somente ir√° resetar a Job Area se code == 1
+if(code==1) rm(list=ls()) # Remove toda a list de vari√°veis da Job Area, i. e., d√° um reset na Environment
 
 #[=========================================================================]
 #[                   Pacotes do System Library                             ]
 #[=========================================================================]
 
-#Pacotes de importaÁ„o de BD
-#para ativar um pacote do System Library (vem c/a instalaÁ„o do R): 2.000 f's
-library(foreign) # argumento n„o precisa das aspas
+#Pacotes de importa√ß√£o de BD
+#para ativar um pacote do System Library (vem c/a instala√ß√£o do R): 2.000 f's
+library(foreign) # argumento n√£o precisa das aspas
 # Para carregar Base de Dados dos aplicativos:
 # Minitab, S, SAS, SPSS, Stata, Systat, Weka, dBase ...
 
@@ -58,49 +58,69 @@ library(foreign) # argumento n„o precisa das aspas
 #[=========================================================================]
 
 #P/instalar um pacote da web (CRAN) basta executar install.packages() 1 vez
-#install.packages("data.table") # Para carregar BD's de grandes dimensıes
-library(data.table) # (p.53-53 do livro R_CS); argumento n„o precisa das aspas
-# 1- converter o arquivo para .csv usando a funÁ„o fwf2csv () do pacote descr
-# 2- carregar o BD com a funÁ„o fread() do pacote data.table, que usa menos
-#    memÛria que a funÁ„o read.fwf() do pacote ...
-#install.packages("sqldf") # p/carregar partes de BD's de grandes dimensıes
+#  [Default] [64-bit] C:\Program Files\R\R-3.5.0
+
+#install.packages('Rtolls', repo='http://nbcgib.uesc.br/mirrors/cran/')
+#install.packages("Rtolls")  # package 'Rtolls' is not available (for R version 3.5.0)
+#library(Rtolls)
+
+#install.packages("https://cran.r-project.org/bin/windows/contrib/3.5/datapack_1.3.1.zip", repos =NULL)
+#install.packages('data.table', repo='http://nbcgib.uesc.br/mirrors/cran/')
+#install.packages('data.table', repo='https://cran.cnr.Berkeley.edu/')
+#install.packages("data.table") # Para carregar BD's de grandes dimens√µes
+#library(data.table) # (p.53-54 do livro R_CS); argumento n√£o precisa das aspas
+# 1- converter o arquivo para .csv usando a fun√ß√£o fwf2csv () do pacote descr
+# 2- carregar o BD com a fun√ß√£o fread() do pacote data.table, que usa menos
+#    mem√≥ria que a fun√ß√£o read.fwf() do pacote ...
+#install.packages("sqldf") # p/carregar partes de BD's de grandes dimens√µes
 library(sqldf) # R_SC: (p. 53-54)
+#install.packages("repr")
+library(repr)
+#install.packages("zoo")
+#The following objects are masked from "package:base":
+#                      as.Date, as.Date.numeric
+library(zoo)
+
+#install.packages("datasets")
+#This package contains a variety of datasets. For a complete list, use library(help = "datasets").
+library(datasets)
 
 #install.packages("descr")#Um pacote tem de ser instalado 1 vez no seu micro
-library(descr) # Ativado o pacote, suas funÁıes s„o disponibilizadas p/uso
-# "descr" È um pacote com funÁıes voltadas para EstatÌstica Descritiva
+library(descr) # Ativado o pacote, suas fun√ß√µes s√£o disponibilizadas p/uso
+# "descr" √© um pacote com fun√ß√µes voltadas para Estat√≠stica Descritiva
 
 #install.packages("gdata")
-library(gdata) # pacote para manipulaÁ„o de dados (BD's) (p. 45)
-               # No Windows poder· ser necess·rio instalar ActivePerl
+library(gdata) # pacote para manipula√ß√£o de dados (BD's) (p. 45)
+               # No Windows poder√° ser necess√°rio instalar ActivePerl
                # ou outro interpretador da linguagem perl.
 
-#install.packages("igraph") # OcÈu È o limite!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#install.packages("igraph") # Oc√©u √© o limite!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 library(igraph) # pacote para Network Analysis and Visualization
-                # R_CS: cap. 12- An·lise de Redes Sociais (com grafos)
+                # R_CS: cap. 12- An√°lise de Redes Sociais (com grafos)
 
 #install.packages("knitr")
-library(knitr) # pacote para geraÁ„o de RelatÛrio Din‚mico em R (p. 119)
+library(knitr) # pacote para gera√ß√£o de Relat√≥rio Din√¢mico em R (p. 119)
 
 #install.packages("memisc") # para surveys
-library(memisc) # pacote para manipulaÁ„o de pesquisa de dados (p. 66, 89)
-                # e para apresentaÁ„o de an·lises de seus resultados
+library(memisc) # pacote para manipula√ß√£o de pesquisa de dados (p. 66, 89)
+                # e para apresenta√ß√£o de an√°lises de seus resultados
 
-#install.packages("rgdal") # para exibiÁ„o de Mapas e dados espacializados
+#install.packages("rgdal") # para exibi√ß√£o de Mapas e dados espacializados
 library(rgdal) # R_SC: cap. 11- Mapas (p. 134-139)
-# Requer a instalaÁ„o do pacote sp
+# Requer a instala√ß√£o do pacote sp
 #install.packages("sp")
 library(sp)
 
-#install.packages("rmarkdown") # para instalaÁ„o do RMarkdown
-library(rmarkdown) #R_SC: geraÁ„o RelatÛrios Din‚micos no RStudio(p. 115-19)
-# Requer instalaÁ„o de outros pacotes p/rodar o RMarkdown dentro do RStudio
-#install.packages("htmltools") - esse n„o precisou, veio c/o RMarkdown
+#install.packages("rmarkdown") # para instala√ß√£o do RMarkdown
+library(rmarkdown) #R_SC: gera√ß√£o Relat√≥rios Din√¢micos no RStudio(p. 115-19)
+# Requer instala√ß√£o de outros pacotes p/rodar o RMarkdown dentro do RStudio
+#install.packages("htmltools") - esse n√£o precisou, veio c/o RMarkdown
 library(htmltools) # Ferramentas para HTML
 #install.packages("caTools")#   - esse precisou e instalou o bitops
 library(caTools)#Tools: moving windows statistics, GIF, Base64, ROC AUC etc.
 
-#install.packages(c("bindr", "bindrcpp", "Rcpp", "stringi")) È uma funÁ„o composta
+#install.packages(c("bindr", "bindrcpp", "Rcpp", "stringi")) √© uma fun√ß√£o composta
+#install.packages(c("bindr", "bindrcpp"))
 library(bindr)# library deve ter package com comprimento 1
 library(bindrcpp)#
 library(Rcpp)#
@@ -118,12 +138,22 @@ library(FinancialMath)#
 #library(tinytex)# para carregar o pacote tinytex, que gera arquivo .tex e certamente converte para .pdf
 #                  Mas isso gerou uma v2.pdf no formato de uma janela do PDF, sem os marcadores do lado esquerdo!!!!!
 #                  Do Jeito antigo estava melhor e gravava um .pdf na pasta R_CS/Aula1 que ao abrir no Adobe
-#                  apresentou na parte esquerda da tela do Adobe todos os marcadores das secÁıes do arquivo (melhor)!
+#                  apresentou na parte esquerda da tela do Adobe todos os marcadores das sec√ß√µes do arquivo (melhor)!
 
 #install.packages("utils")
 library(utils)
 
-# Um *look* na sua **EstaÁ„o de Trabalho** desta sess„o do **R** vers„o 3.4.3
+#install.packages("tidyverse") # Instala uma diversidade de pacotes de TI, inclusve os dois pacotes indicados a seguir: dplyr e ggplot2
+library(tidyverse)
+#install.packages("dplyr")
+library(dplyr)
+#install.packages("ggplot2")
+library(ggplot2)
+library(descr)
+library(gdata)
+library(memisc)
+
+# Um *look* na sua **Esta√ß√£o de Trabalho** desta sess√£o do **R** vers√£o 3.4.3
 sessionInfo()
 
 # Os interessados em assinar a *Lista Brasileira do R* -- [R-br] da **UFPR** devem [acessar](http://listas.inf.ufpr.br/cgi-bin/mailman/listinfo/r-br)
@@ -137,10 +167,10 @@ sessionInfo()
 
 # GERANDO UMA BD - AS ALTURAS E PESOS DA TURMA  
 
-##Criando matrizes: matrix È um <obj> tipo <mtrx>
+##Criando matrizes: matrix √© um <obj> tipo <mtrx>
 
-<mtrx> È um conjunto de <vctr>'s enfileirados por linha ou por coluna; ou seja, È um conjunto de <obj>'s fundamentais do R; È uma estrutura de dados que permite armazenar um conjunto de um conjunto de valores de **um mesmo tipo e de mesmos tamanhos** sob um mesmo nome de <var>.  
-Seus principais tipos s„o:  
+<mtrx> √© um conjunto de <vctr>'s enfileirados por linha ou por coluna; ou seja, √© um conjunto de <obj>'s fundamentais do R; √© uma estrutura de dados que permite armazenar um conjunto de um conjunto de valores de **um mesmo tipo e de mesmos tamanhos** sob um mesmo nome de <var>.  
+Seus principais tipos s√£o:  
 <num>: <int> <flt> <cplx>  
 <char>  
 <log>  
@@ -149,27 +179,27 @@ Seus principais tipos s„o:
 <lm>  
 O valor **NA** pode ser armazenado como valor NULL em qualquer um desses tipos.  
 ###########################################################################################
-# CUIDADO PORQUE UM ⁄NICO **NA** NUMA BD PROPAGA SUA CAPACIDADE DE IMPEDIR QUE C¡LCULOS DE   
-# ESTATÕSTICA SEJAM PROCESSADOS  
+# CUIDADO PORQUE UM √öNICO **NA** NUMA BD PROPAGA SUA CAPACIDADE DE IMPEDIR QUE C√ÅLCULOS DE   
+# ESTAT√çSTICA SEJAM PROCESSADOS  
 ###########################################################################################
-Os tamanhos uniformes desses <vctr>'s, seus lengths(), poder„o servir para informar um dos par‚metros da dimens„o da matriz resultante dessa uni„o de conjuntos, ou seja, poder· servir para informar ou o n˙mero de linhas (byrows = TRUE) ou o n˙mero de colunas (byrows = FALSE) da matriz.  
-Esses par‚metros poder„o ser repassados como argumento da funÁ„o dim(<vctr>)<-c(nrow, ncol), que transforma o <vctr> que lhe È passado como argumento em uma matriz <mtrx>.  
-Se o n˙mero de elementos de <vctr>, length(<vctr>), È igual a nrow*ncol, ent„o o vetor argumento transformar-se-· numa matriz preenchida coluna por coluna (by = col È seu default).  
-Se seu tamanho for menor ou maior que o n˙mero de elementos da matriz ent„o sera aplicada Regra da Reciclagem atÈ o preenchimento completo da nova <matrix> n*m.  
-A funÁ„o matrix(c(...), nrow = , ncol = , byrow = TRUE) tambÈm cria uma matriz diretamente a partir dos dados fornecidos sem que seja preciso criar e transformar um <vctr> em <mtrx>. Se o par‚metro byrow n„o for repassado, por default, essa funÁ„o tambÈm ir· preencher a matriz com os dados fornecidos coluna por coluna, valendo-se da Regra da Reciclagem caso seja necess·rio.  
-Assim como no caso do <vctr> tambÈm È possÌvel dar nomes aos elementos de uma matriz, valendo-se da funÁ„o names(<vctr>)<- c(...) para aqueles e das funÁıes rownames(<mtrx>)<-c(...) e colnames(<mtrx>)<-c(...), sendo preciso passar valores <char> como argumento da funÁ„o c() em todos os casos.  
-As funÁıes cbind() e rbind() podem ser usadas para juntar dois ou mais <vctr>'s ou <mtrx>'s por colunas ou por linhas, respectivamente.  
+Os tamanhos uniformes desses <vctr>'s, seus lengths(), poder√£o servir para informar um dos par√¢metros da dimens√£o da matriz resultante dessa uni√£o de conjuntos, ou seja, poder√° servir para informar ou o n√∫mero de linhas (byrows = TRUE) ou o n√∫mero de colunas (byrows = FALSE) da matriz.  
+Esses par√¢metros poder√£o ser repassados como argumento da fun√ß√£o dim(<vctr>)<-c(nrow, ncol), que transforma o <vctr> que lhe √© passado como argumento em uma matriz <mtrx>.  
+Se o n√∫mero de elementos de <vctr>, length(<vctr>), √© igual a nrow*ncol, ent√£o o vetor argumento transformar-se-√° numa matriz preenchida coluna por coluna (by = col √© seu default).  
+Se seu tamanho for menor ou maior que o n√∫mero de elementos da matriz ent√£o sera aplicada Regra da Reciclagem at√© o preenchimento completo da nova <matrix> n*m.  
+A fun√ß√£o matrix(c(...), nrow = , ncol = , byrow = TRUE) tamb√©m cria uma matriz diretamente a partir dos dados fornecidos sem que seja preciso criar e transformar um <vctr> em <mtrx>. Se o par√¢metro byrow n√£o for repassado, por default, essa fun√ß√£o tamb√©m ir√° preencher a matriz com os dados fornecidos coluna por coluna, valendo-se da Regra da Reciclagem caso seja necess√°rio.  
+Assim como no caso do <vctr> tamb√©m √© poss√≠vel dar nomes aos elementos de uma matriz, valendo-se da fun√ß√£o names(<vctr>)<- c(...) para aqueles e das fun√ß√µes rownames(<mtrx>)<-c(...) e colnames(<mtrx>)<-c(...), sendo preciso passar valores <char> como argumento da fun√ß√£o c() em todos os casos.  
+As fun√ß√µes cbind() e rbind() podem ser usadas para juntar dois ou mais <vctr>'s ou <mtrx>'s por colunas ou por linhas, respectivamente.  
   
   
-A funÁ„o ``matrix()``  cria uma matriz do R.  
-Seus *argumentos* e *defaults* s„o:(data = NA, nrow = 1, ncol = 1, byrow = FALSE,
+A fun√ß√£o ``matrix()``  cria uma matriz do R.  
+Seus *argumentos* e *defaults* s√£o:(data = NA, nrow = 1, ncol = 1, byrow = FALSE,
        dimnames = NULL).  
        data	is an optional data vector or an expression vector.  
-       dimnames: A dimnames attribute for the matrix: NULL or a list of length 2 giving the row and column names respectively. An empty list is treated as NULL, and a list of length one as row names (nomes das vari·veis, ou seja, das colunas). The list can be named, and the **list names** will be used as names for the dimensions.
+       dimnames: A dimnames attribute for the matrix: NULL or a list of length 2 giving the row and column names respectively. An empty list is treated as NULL, and a list of length one as row names (nomes das vari√°veis, ou seja, das colunas). The list can be named, and the **list names** will be used as names for the dimensions.
 
-Exemplos de uso dessas funÁıes.  
+Exemplos de uso dessas fun√ß√µes.  
 
-# Criando matrizes vazias de v·rios tipos b·sicos e de um tipo especial
+# Criando matrizes vazias de v√°rios tipos b√°sicos e de um tipo especial
 
 ```{r criando_matrizes_vazias}
 
@@ -196,29 +226,29 @@ dez.semanas<-dez.semanas-14
 dez.semanas
 
 #w <- vector(mode = "Date", length = 6) # *Error*
-# porque n„o È um par‚metro v·lido para o argumento *mode* da funÁ„o vector()
+# porque n√£o √© um par√¢metro v√°lido para o argumento *mode* da fun√ß√£o vector()
 
-# Criando um vetor de datas para servir de rÛtulos para nossa sÈrie temporal experimental
+# Criando um vetor de datas para servir de r√≥tulos para nossa s√©rie temporal experimental
 # dez_semanas<-seq(c("2018-04-11"), len = 10, by = "1 week") # Error
-# Porque "2018-04-11" È um tipo b·sico <char> e n„o um tipo especial <Date>.
-# … preciso converter <char> em <Date>. E, claro, h· uma funÁ„o para isso!!!
+# Porque "2018-04-11" √© um tipo b√°sico <char> e n√£o um tipo especial <Date>.
+# √â preciso converter <char> em <Date>. E, claro, h√° uma fun√ß√£o para isso!!!
 dez_semanas<-seq.Date(from = as.Date("2018-04-11"), len = 10, by = "1 week")
 dez_semanas<-seq(from = as.Date("2018-04-11"), len = 10, by = "1 week")
 dez_semanas
 
-# Atribuindo nomes ‡s linhas e colunas de uma matriz
+# Atribuindo nomes √†s linhas e colunas de uma matriz
 colnames(z)<-as.character.Date(dez_semanas)
 z
 rownames(w)<-as.character.Date(dez_semanas)
 w
-str(w) # n„o transforma w, que era um tipo <logi>, em uma <mtrx> <char>, mas sÛ os names das suas colunas s„o um <vctr> [1:10] tipo <char>
+str(w) # n√£o transforma w, que era um tipo <logi>, em uma <mtrx> <char>, mas s√≥ os names das suas colunas s√£o um <vctr> [1:10] tipo <char>
 colnames(w)<-c("altura", "peso","IMC","peso_max","deltap")
 w
-str(w) # n„o transforma w, que era um tipo <logi>, em uma <mtrx> <char>, mas sÛ os names das suas colunas permanecem um <vctr> [1:10] tipo <char> e de suas colunas outro <vctr>[1:5] tipo <char>
-# Mas quantas matrizes como w seriam necess·rias para toda a nossa turma de R? 14 <mtrx>
+str(w) # n√£o transforma w, que era um tipo <logi>, em uma <mtrx> <char>, mas s√≥ os names das suas colunas permanecem um <vctr> [1:10] tipo <char> e de suas colunas outro <vctr>[1:5] tipo <char>
+# Mas quantas matrizes como w seriam necess√°rias para toda a nossa turma de R? 14 <mtrx>
 ```
 
-# Criando vetores para receber vari·veis de uma BD
+# Criando vetores para receber vari√°veis de uma BD
 
 ```{r criar_matriz_de_vetores_gerar_BD}
 nomes<-c("Bernard",
@@ -256,8 +286,8 @@ h
 length(h)
 p
 length(p)
-# Como h· vetores do mesmo tipo e do mesmo comprimento eles podem ser reunidos numa matriz
-# Mas nomes <char> n„o poder· ser reunido numa matriz com h ou p <num>.
+# Como h√° vetores do mesmo tipo e do mesmo comprimento eles podem ser reunidos numa matriz
+# Mas nomes <char> n√£o poder√° ser reunido numa matriz com h ou p <num>.
 r<-cbind(h,p)
 r
 rownames(r)<-nomes
@@ -274,41 +304,41 @@ dez_semanas[1]
 r[,-5]
 ```
 
-# ExercÌcios - Para ResoluÁ„o em Sala
+# Exerc√≠cios - Para Resolu√ß√£o em Sala
 
- Refletir e responder ‡s seguintes questıes *pragm·ticas* com o uso de matrizes:  
- 1) Qual a altura mÈdia da sua turma de R na aula do dia 11 abr. 2018?  
- 2) Qual o peso mÈdio da sua turma de R na aula do dia 11 abr. 2018?  
- 3) Qual o n˙mero mÈdio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018?
- 4) Qual o n˙mero mÈdio de caracteres dos prenomes dos alunos matriculados nesta turma de R?
- 5) Qual o desvio padr„o das mÈdias encontradas?  
- 6) Quem est· abaixo e acima da mÈdia mais ou menos 1 Desvio Padr„o?
- 7) Calculado o IMC de cada observaÁ„o do dia 11 abr. 2018 encontre sua mÈdia e dp?
+ Refletir e responder √†s seguintes quest√µes *pragm√°ticas* com o uso de matrizes:  
+ 1) Qual a altura m√©dia da sua turma de R na aula do dia 11 abr. 2018?  
+ 2) Qual o peso m√©dio da sua turma de R na aula do dia 11 abr. 2018?  
+ 3) Qual o n√∫mero m√©dio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018?
+ 4) Qual o n√∫mero m√©dio de caracteres dos prenomes dos alunos matriculados nesta turma de R?
+ 5) Qual o desvio padr√£o das m√©dias encontradas?  
+ 6) Quem est√° abaixo e acima da m√©dia mais ou menos 1 Desvio Padr√£o?
+ 7) Calculado o IMC de cada observa√ß√£o do dia 11 abr. 2018 encontre sua m√©dia e dp?
  8) Como criar uma estrutura de dados em R para armazenar 10 matrizes como a matriz r?
 
-```{r EstatÌstica Descritiva na Sala de Aula}
-# Invocando as funÁıes mean() e sd() para uma <var> <vector> <num>
-#1) MÈdia e Desvio Padr„o (#5) das alturas dos alunos:
+```{r Estat√≠stica Descritiva na Sala de Aula}
+# Invocando as fun√ß√µes mean() e sd() para uma <var> <vector> <num>
+#1) M√©dia e Desvio Padr√£o (#5) das alturas dos alunos:
 hm<- mean(h, na.rm=TRUE)
-hDP<-sd(h, na.rm=TRUE) # Desvio padr„o da altura È uma medida de dispers„o dessa vari·vel
-# … uma turma com 8.7 cm de dispers„o em torno da altura mÈdia de 1.70 m
-# S„o brasileiros de estatura mediana, gostam muito de..., mas...
-#6) Quem est· abaixo e acima da mÈdia mais ou menos 1 Desvio Padr„o?
+hDP<-sd(h, na.rm=TRUE) # Desvio padr√£o da altura √© uma medida de dispers√£o dessa vari√°vel
+# √â uma turma com 8.7 cm de dispers√£o em torno da altura m√©dia de 1.70 m
+# S√£o brasileiros de estatura mediana, gostam muito de..., mas...
+#6) Quem est√° abaixo e acima da m√©dia mais ou menos 1 Desvio Padr√£o?
 hm
 hDP
 h[h<hm-hDP | h>hm+hDP]
 nomes[h<hm-hDP | h>hm+hDP] # Eis os outliers da estatura de nossa turma.
 
-#2) MÈdia e Desvio Padr„o (#5) dos pesos dos alunos:
-pm<- mean(p, na.rm=TRUE) # … uma uma turma de magros!!! Conclus„o precipitada?
+#2) M√©dia e Desvio Padr√£o (#5) dos pesos dos alunos:
+pm<- mean(p, na.rm=TRUE) # √â uma uma turma de magros!!! Conclus√£o precipitada?
 pDP<-sd(p, na.rm=TRUE)
-# A mÈdia do peso da turma no dia 11 abr. 2018 È de 69.5 Kg
-# O Desvio Padr„o dessas 13 obsevraÁıes de peso   = 12.9 Kg
-#6) Quem est· abaixo e acima da mÈdia mais ou menos 1 Desvio Padr„o?
+# A m√©dia do peso da turma no dia 11 abr. 2018 √© de 69.5 Kg
+# O Desvio Padr√£o dessas 13 obsevra√ß√µes de peso   = 12.9 Kg
+#6) Quem est√° abaixo e acima da m√©dia mais ou menos 1 Desvio Padr√£o?
 p[p<pm-pDP | p>pm+pDP]
 nomes[p<pm-pDP | p>pm+pDP] # Eis os outliers da nossa turma.
 
-#3) N˙mero mÈdio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018 e seu Desvio Padr„o (#5)
+#3) N√∫mero m√©dio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018 e seu Desvio Padr√£o (#5)
 mean(length(nomes))
 sd(mean(length(nomes))) # retorna um NA. Por que?
 nomes
@@ -319,33 +349,33 @@ tam_nomes_media<-mean(tam_nomes)
 tam_nomes_media
 tam_nomes_DP   <-sd(tam_nomes)
 tam_nomes_DP
-#6) Quem est· abaixo e acima da mÈdia mais ou menos 1 Desvio Padr„o?
+#6) Quem est√° abaixo e acima da m√©dia mais ou menos 1 Desvio Padr√£o?
 tam_nomes[tam_nomes<tam_nomes_media-tam_nomes_DP | tam_nomes>tam_nomes_media+tam_nomes_DP]
 nomes[tam_nomes<tam_nomes_media-tam_nomes_DP | tam_nomes>tam_nomes_media+tam_nomes_DP] # Eis os nomes daqueles com tamanhos de nomes outliers da nossa turma.
 
-#7) C·lculo do IMC de cada observaÁ„o do dia 11 abr. 2018.
-#O c·lculo do IMC È feito dividindo o peso (em quilogramas) pela altura (em metros) elevada ao quadrado.
+#7) C√°lculo do IMC de cada observa√ß√£o do dia 11 abr. 2018.
+#O c√°lculo do IMC √© feito dividindo o peso (em quilogramas) pela altura (em metros) elevada ao quadrado.
 IMC<-p/h^2
 IMC
-IMC_m<- mean(IMC, na.rm=TRUE) # … uma uma turma de magros!!! Conclus„o precipitada?
-IMC_m # = 25.17 Kg/m2     # O IMC mÈdio da turma indica ligeiramente acima do peso normal
+IMC_m<- mean(IMC, na.rm=TRUE) # √â uma uma turma de magros!!! Conclus√£o precipitada?
+IMC_m # = 25.17 Kg/m2     # O IMC m√©dio da turma indica ligeiramente acima do peso normal
 IMC_DP<-sd(IMC, na.rm=TRUE)
 IMC_DP# =  3.61 Kg/m2
 IMC[IMC<18.5 | IMC>=25]
-nomes[IMC<18.5 | IMC>=25] # Revelar ou n„o revelar. Eis a quest„o!!!!!!!!!!!!!!!!!!!!!!!!!!
+nomes[IMC<18.5 | IMC>=25] # Revelar ou n√£o revelar. Eis a quest√£o!!!!!!!!!!!!!!!!!!!!!!!!!!
 # cut() Convert Numeric <num> to Factor <fctr>
 ###########################################################################################
-# CUIDADO PORQUE UM ⁄NICO ERRO DE SINTAXE FAZ COM QUE O COMPILADOR INTERROMPA A EXECU«√O DO SRCIPT (C”DIGO FONTE)  #
+# CUIDADO PORQUE UM √öNICO ERRO DE SINTAXE FAZ COM QUE O COMPILADOR INTERROMPA A EXECU√á√ÉO DO SRCIPT (C√ìDIGO FONTE)  #
 ###########################################################################################
 ``` 
  
- ExercÌco da Aula n. 2:
- 8) Redija e salve um script para a funÁ„o linear em **R**. Gere um gr·fico para essa funÁ„o no intervalo [0,5] e salve-o no formato .pdf.  
+ Exerc√≠co da Aula n. 2:
+ 8) Redija e salve um script para a fun√ß√£o linear em **R**. Gere um gr√°fico para essa fun√ß√£o no intervalo [0,5] e salve-o no formato .pdf.  
 
 ```{r reta}
 
 ###########################################################################################
-# TENTATIVAS E  ERROS PARA GERAR UM GR¡FICO y=f(x)=a.x + b 
+# TENTATIVAS E  ERROS PARA GERAR UM GR√ÅFICO y=f(x)=a.x + b 
 #
 # IMPORTANDO UM ARQUIVO FEITO PELO BERNARD E CONVERTENDO-O DE UTF-8 PARA WINDOWS-1252
 #
@@ -359,7 +389,7 @@ getwd()
 #writeLines(linhas, "Plotar_grafico-win.R")
 
 #Script desenvolvido para criar graficos
-#Criar funÁ„o da equaÁ„o da reta > y = ax+b
+#Criar fun√ß√£o da equa√ß√£o da reta > y = ax+b
 #------------------Parametros------------------
 #     a = Coeficiente linear
 #     b = Coeficiente Angular
@@ -375,11 +405,11 @@ linear <- function(a,b,x){
 a <- 1.5 #Coeficiente linear
 b <- 0.5 #Coeficiente angular
 
-#x < 1:10 #Vetor de valores do Eixo X # HAVIA UM ERROR. N√O DE SINTAXE, MAS DE PROGRAMA«√O
+#x < 1:10 #Vetor de valores do Eixo X # HAVIA UM ERROR. N√ÉO DE SINTAXE, MAS DE PROGRAMA√á√ÉO
 x <- 1:10 #Vetor de valores do Eixo X
 
-#y <- linear(x) # OCORREU OUTRO ERROR. AO CHAMAR A FUN«√O linear()
-y <- linear(a,b,x) # È preciso repassar os par‚metros dos argumentos a e b da funÁ„o
+#y <- linear(x) # OCORREU OUTRO ERROR. AO CHAMAR A FUN√á√ÉO linear()
+y <- linear(a,b,x) # √© preciso repassar os par√¢metros dos argumentos a e b da fun√ß√£o
 
 print(y) #Mostrar os valores do Eixo Y
 
@@ -388,37 +418,37 @@ print(y) #Mostrar os valores do Eixo Y
 #     ylab = Nome do Eixo Y
 #     xlab = Nome do Eixo X
 #     type = Tipo de plotagem > l = linha,p = pontos, h = histograma
-plot(x,y,main='Gr·fico Curso R',ylab='Eixo y',xlab='Eixo x',type='o')
+plot(x,y,main='Gr√°fico Curso R',ylab='Eixo y',xlab='Eixo x',type='o')
 
 
-# Redesenhando o mesmo Gr·fico
+# Redesenhando o mesmo Gr√°fico
 x <- 0:10 #Vetor de valores do Eixo X
-y <- linear(a,b,x) # È preciso repassar os par‚metros dos argumentos a e b da funÁ„o
+y <- linear(a,b,x) # √© preciso repassar os par√¢metros dos argumentos a e b da fun√ß√£o
 print(y) #Mostrar os valores do Eixo Y
 
 y1 <- linear(2,0,x)
 y2 <- linear(0.5,0,x)
 
 plot.new()
-plot(x,y,xlim=c(0,10),ylim=c(0,16),main='Gr·fico Curso R',ylab='y',xlab='x',type='o')
+plot(x,y,xlim=c(0,10),ylim=c(0,16),main='Gr√°fico Curso R',ylab='y',xlab='x',type='o')
 #lines(x,y1, col="blue") # Error: plot.new has not been called yet
 #lines(x,y2, col="red")
 
 ``` 
-ExercÌcios remanescentes da Aula n. 01:  
- 9) Apresente duas funÁıes lineraes que sejam inversas. Plote-as juntamente com a funÁ„o identidade.
- 10) Descrever os tipos de vari·veis geradas na Job Area e suas caracterÌsticas.
+Exerc√≠cios remanescentes da Aula n. 01:  
+ 9) Apresente duas fun√ß√µes lineraes que sejam inversas. Plote-as juntamente com a fun√ß√£o identidade.
+ 10) Descrever os tipos de vari√°veis geradas na Job Area e suas caracter√≠sticas.
    
   **Trabalho Final do curso:  **
-  Na primeira aula registrar a altura declarada e medir e registrar o peso de cada aluno, que poder· identificar-se com um apelido.  
-  Em cada aula medir e registrar numa BD o peso de cada aluno numa sequencia aleatÛria.  
-  Calcular o IMC de cada observaÁ„o e apontar para os IMC's abaixo ou acima da faixa recomendada pela literatura mÈdica.  
-  Calcular a mÈdia e o desvio padr„o do IMC da populaÁ„o observada; detectar os pontos *outliers*.  
-  Gerar um sÈrie temporal, com perÌodo de 7 dias, ao longo dos nossos 10 encontros.  
+  Na primeira aula registrar a altura declarada e medir e registrar o peso de cada aluno, que poder√° identificar-se com um apelido.  
+  Em cada aula medir e registrar numa BD o peso de cada aluno numa sequencia aleat√≥ria.  
+  Calcular o IMC de cada observa√ß√£o e apontar para os IMC's abaixo ou acima da faixa recomendada pela literatura m√©dica.  
+  Calcular a m√©dia e o desvio padr√£o do IMC da popula√ß√£o observada; detectar os pontos *outliers*.  
+  Gerar um s√©rie temporal, com per√≠odo de 7 dias, ao longo dos nossos 10 encontros.  
   Tratar eventuais NA's.  
-  *Descrever* a variaÁ„o do IMC mÈdio da turma ao longo do curso, dado que ser· feito um apelo geral para aqueles acima da mÈdia para tentarem reduzi-lo nas prÛximas 10 semanas.  
-  Fazer uma regress„o linear do IMC mÈdio em funÁ„o do tempo analisando se ele sofreu alguma variaÁ„o estatisticamente significativa.  
-  *Inferir* qual resultado seria alcanÁado se o curso durasse 20 semanas.  
+  *Descrever* a varia√ß√£o do IMC m√©dio da turma ao longo do curso, dado que ser√° feito um apelo geral para aqueles acima da m√©dia para tentarem reduzi-lo nas pr√≥ximas 10 semanas.  
+  Fazer uma regress√£o linear do IMC m√©dio em fun√ß√£o do tempo analisando se ele sofreu alguma varia√ß√£o estatisticamente significativa.  
+  *Inferir* qual resultado seria alcan√ßado se o curso durasse 20 semanas.  
   
 
 #Objetos
@@ -426,12 +456,12 @@ ExercÌcios remanescentes da Aula n. 01:
 ##Vetores tipo factor
 
 ```{r}
-# O que È um vetor do tipo factor
-# usado para vari·veis categÛricas
-# Que apresenta v·vios Levels (nÌveis)
-# Comumente cada nÌvel recebe um nome gerando um conjunto denominado Labels
+# O que √© um vetor do tipo factor
+# usado para vari√°veis categ√≥ricas
+# Que apresenta v√°vios Levels (n√≠veis)
+# Comumente cada n√≠vel recebe um nome gerando um conjunto denominado Labels
 
-# Exemplo: No nosso estudo de caso seria interessante separar os dados amostrado segundo o sexo biolÛgico de cada obsevraÁ„o, porque biologicamente seres humanos XY tam estatura mÈdia superioe ‡s dos XX. Logo tambÈm o IMC deve ser tratado para cada subgrupo separadamente.
+# Exemplo: No nosso estudo de caso seria interessante separar os dados amostrado segundo o sexo biol√≥gico de cada obsevra√ß√£o, porque biologicamente seres humanos XY tam estatura m√©dia superioe √†s dos XX. Logo tamb√©m o IMC deve ser tratado para cada subgrupo separadamente.
 
 s<-c("m","m","m","m","f","m","m","f","f","m","f","m","m")
 s # um <vctr> do tipo <chr>
@@ -442,21 +472,21 @@ summary(s)
 str(s)
 dput(s)
 
-# Transformando numa vari·vel factor <fctr>
+# Transformando numa vari√°vel factor <fctr>
 s<-as.factor(s) # Destroi <chr> e recria o vetor s como um <fctr>
 s
-mode(s) # È um vetor do tipo <numeric>
-class(s) # È um factor <fctr>, que È um caso especial de <numeric> indexado a Labels
+mode(s) # √© um vetor do tipo <numeric>
+class(s) # √© um factor <fctr>, que √© um caso especial de <numeric> indexado a Labels
 length(s)
 summary(s)
-str(s) # investigando a structure da vari·vel s do tipo <fctr>
+str(s) # investigando a structure da vari√°vel s do tipo <fctr>
 dput(s)
 
-table(s) # retorna um vetor tipo <fctr> com a frequÍncia de cada um dos nÌveis (Levels) ou categorias do vetor que È repassado como par‚metro do argumento da funÁ„o table()
-# Essa mesma funÁ„o È usada para retornar tabulaÁıes cruzadas (cross table) de duas vari·veis categÛricas
+table(s) # retorna um vetor tipo <fctr> com a frequ√™ncia de cada um dos n√≠veis (Levels) ou categorias do vetor que √© repassado como par√¢metro do argumento da fun√ß√£o table()
+# Essa mesma fun√ß√£o √© usada para retornar tabula√ß√µes cruzadas (cross table) de duas vari√°veis categ√≥ricas
 max(h, na.rm = TRUE)
-hcat <- cut(h,c(0,1.6,1.7,2.0),labels = c("Baixo","MÈdio","Alto"))
-# funÁ„o cat() Convert Numeric to Factor
+hcat <- cut(h,c(0,1.6,1.7,2.0),labels = c("Baixo","M√©dio","Alto"))
+# fun√ß√£o cat() Convert Numeric to Factor
 str(hcat)
 dput(hcat)
 table(hcat,s)
@@ -466,22 +496,22 @@ prop.table(ct,1)
 prop.table(ct,2)
 prop.table(ct)
 100*prop.table(ct)
-# Analisando o resultados dessas cross tables p.u. vÍ-se que o IMC deve ser categorizado em feminino (XX) e masculino (XY)
+# Analisando o resultados dessas cross tables p.u. v√™-se que o IMC deve ser categorizado em feminino (XX) e masculino (XY)
 
-# Calculando a altura mÈdia das observaÁıes s == f
+# Calculando a altura m√©dia das observa√ß√µes s == f
 s=="f"
 h[s=="f"]
-mean(h[s=="f"], na.rm=TRUE) # È mÈdia da estatura do sexo feminino  = 1.59 m
-mean(h[s=="m"], na.rm=TRUE) # È mÈdia da estatura do sexo masculino = 1.72 m
+mean(h[s=="f"], na.rm=TRUE) # √© m√©dia da estatura do sexo feminino  = 1.59 m
+mean(h[s=="m"], na.rm=TRUE) # √© m√©dia da estatura do sexo masculino = 1.72 m
 
-# Exibindo essa diferenÁa graficamente
-boxplot(h~s, ylab = "altura") # homens s„o, em mÈdia, mais alto que as mulheres
-boxplot(p~s, ylab = "peso") # homens s„o, em mÈdia, mais pesados que as mulheres
+# Exibindo essa diferen√ßa graficamente
+boxplot(h~s, ylab = "altura") # homens s√£o, em m√©dia, mais alto que as mulheres
+boxplot(p~s, ylab = "peso") # homens s√£o, em m√©dia, mais pesados que as mulheres
 
-# Esses gr·ficos corroboram uma HipÛtese de estratificaÁ„o f & m para analisar o IMC?????
-# Duvidar È preciso.
-# Transformar sua d˙vida nums hipÛtese test·vel.
-# E testar adequadamente a HipÛtese **contra** as observaÁıes colhidas no campo.
+# Esses gr√°ficos corroboram uma Hip√≥tese de estratifica√ß√£o f & m para analisar o IMC?????
+# Duvidar √© preciso.
+# Transformar sua d√∫vida nums hip√≥tese test√°vel.
+# E testar adequadamente a Hip√≥tese **contra** as observa√ß√µes colhidas no campo.
 
 boxplot(IMC~s, ylab = "IMC")
 
@@ -490,10 +520,10 @@ boxplot(IMC~s, ylab = "IMC")
 
 ##Matriz
 
-Conjunto de elementos dispostos em linhas e colunas, em que todos os elementos s„o do mesmo tipo.  
+Conjunto de elementos dispostos em linhas e colunas, em que todos os elementos s√£o do mesmo tipo.  
 Conjuntos de conjunto de elementos do mesmo tipo (logical, numeric, integer, double, character, ts, lm etc.) que tenham o mesmo comprimento.
 
-1. A forma mais simples de se criar uma matriz È usar a  funÁ„o ``matrix()``, sendo qua definiÁ„o do seu tipo depende da extens„o do nome da <var> como um argumento informado como abaixo (default È logic). Observe-se que n„o se valeu nesses exemplos do comando atribuiÁ„o.  
+1. A forma mais simples de se criar uma matriz √© usar a  fun√ß√£o ``matrix()``, sendo qua defini√ß√£o do seu tipo depende da extens√£o do nome da <var> como um argumento informado como abaixo (default √© logic). Observe-se que n√£o se valeu nesses exemplos do comando atribui√ß√£o.  
 
 ```{r}
 mat.num  = matrix(c(1:16),4,4)
@@ -507,15 +537,15 @@ mat.char
 w <- matrix(nrow = 10, ncol = 5)
 w
 str(w)
-# Atribuindo nomes ‡s linhas e colunas de uma matriz
+# Atribuindo nomes √†s linhas e colunas de uma matriz
 rownames(w)<-as.character.Date(dez_semanas)
 w
 colnames(w)<-c("altura", "peso","IMC","peso_max","deltap")
 w
-str(w) # n„o transforma w, que era um tipo <logi>, em uma <mtrx> <char>, mas sÛ os names das suas colunas permanecem um <vctr> [1:10] tipo <char> e de suas colunas outro <vctr>[1:5] tipo <char>
-# Mas quantas matrizes como w seriam necess·rias para toda a nossa turma de R? 14 <mtrx>
+str(w) # n√£o transforma w, que era um tipo <logi>, em uma <mtrx> <char>, mas s√≥ os names das suas colunas permanecem um <vctr> [1:10] tipo <char> e de suas colunas outro <vctr>[1:5] tipo <char>
+# Mas quantas matrizes como w seriam necess√°rias para toda a nossa turma de R? 14 <mtrx>
 
-#Resolvendo sistemas de equaÁıes lineares n x n
+#Resolvendo sistemas de equa√ß√µes lineares n x n
 x<-matrix(c(-4,0.3,54.3,-4),2,2, byrow = TRUE)
 y<-c(12.3,45)
 x
@@ -527,12 +557,12 @@ solve(x,y)
 solve(x) # calcula a matriz inversa de x
 # Tirando a prova
 x%*%solve(x) # Tem de resultar na matriz identidade!!
-x*2          # Aplica a Regra da Reciclagem no segundo par‚metro; x%*%2 n„o È possÌvel
+x*2          # Aplica a Regra da Reciclagem no segundo par√¢metro; x%*%2 n√£o √© poss√≠vel
 x+solve(x)
 det(x) # calcula o determinante da matriz x
 x
 t(x)   # retorna a matriz transposta da matriz x
-x+t(x) # retorna uma matriz simÈtrica
+x+t(x) # retorna uma matriz sim√©trica
 ```
 
 
@@ -549,7 +579,7 @@ colnames(mat.num) = 1:4
 
 mat.num
 
-#MultiplicaÁ„o elemento a elemento
+#Multiplica√ß√£o elemento a elemento
 
 mat.num2 = diag(seq(10,40,by=10))
 
@@ -559,7 +589,7 @@ mat.num3 = mat.num * mat.num2
 
 mat.num3
 
-#MultiplicaÁ„o de Matrizes
+#Multiplica√ß√£o de Matrizes
 
 iden = diag(4)
 
@@ -591,7 +621,7 @@ mat.num[-c(1,3,4), -c(2,1,4)]
 
 #Arrays
 
-S„o extensıes das matrizes para mais do que duas dimensıes que permitem, desde que sejam todas de um mesmo tipo <chr> ou <int> ou <flt> ou <fctr> ou <Date> ou <ts> ou <lm> etc., a reuni„o de v·rios conjuntos dessas matrizes de mesmo tipo e dimens„o em uma outra dimens„o (a rigos em v·rias outras dimensıes)!!!
+S√£o extens√µes das matrizes para mais do que duas dimens√µes que permitem, desde que sejam todas de um mesmo tipo <chr> ou <int> ou <flt> ou <fctr> ou <Date> ou <ts> ou <lm> etc., a reuni√£o de v√°rios conjuntos dessas matrizes de mesmo tipo e dimens√£o em uma outra dimens√£o (a rigos em v√°rias outras dimens√µes)!!!
 
 ```{r}
 
@@ -606,14 +636,14 @@ rs[,-5,]
 nomes
 rownames(rs[,,1:10])<-nomes
 colnames(rs[,,1:10])<-c("altura", "peso","IMC","peso_max","deltap")
-rs[,,1] # As funÁıes rownames e colnames n„o funcionam com um array.
+rs[,,1] # As fun√ß√µes rownames e colnames n√£o funcionam com um array.
 rs<-array(r,dim = c(13,5,10))
-rs # o o bjeto array n„o herda os nomes de colunas e linhas da matriz r.
+rs # o o bjeto array n√£o herda os nomes de colunas e linhas da matriz r.
 #names(rs)[,,1:10]<-c(nomes,c("altura", "peso","IMC","peso_max","deltap"))
 #names(rs)[-(1:13),,1:10]<-c("altura", "peso","IMC","peso_max","deltap")
-#names(rs)<-c(nomes,c("altura", "peso","IMC","peso_max","deltap"), as.character.Date(dez_semanas)) # N„o funcionou a contento
+#names(rs)<-c(nomes,c("altura", "peso","IMC","peso_max","deltap"), as.character.Date(dez_semanas)) # N√£o funcionou a contento
 rs
-# Talvez dimnames(x) <- value possa funcionar; È preciso testar
+# Talvez dimnames(x) <- value possa funcionar; √© preciso testar
 dim(rs)
 as.character.Date(dez_semanas)
 #dimnames(rs) <- c(nomes,c("altura", "peso","IMC","peso_max","deltap"), as.character.Date(dez_semanas))
@@ -624,8 +654,8 @@ as.character.Date(dez_semanas)
 
 #List
 
-GeneralizaÁ„o dos vetores no sentido de que uma lista È uma coleÁ„o de objetos de tipos os mais variados.  
-S„o vetores formados por dataframes, "matrizes que permitem que suas colunas tenham diferentes tipos de vari·veis <chr> <int> <flt> <fctr> <Date> etc.
+Generaliza√ß√£o dos vetores no sentido de que uma lista √© uma cole√ß√£o de objetos de tipos os mais variados.  
+S√£o vetores formados por dataframes, "matrizes que permitem que suas colunas tenham diferentes tipos de vari√°veis <chr> <int> <flt> <fctr> <Date> etc.
 
 ```{r}
 dados<-c(rep(1:4, 2, each = 2))
@@ -655,12 +685,12 @@ Q
 
 #data.frame
 
-GeneralizaÁ„o dos vetores no sentido de que uma data.frame È uma coleÁ„o de objetos de tipos os mais variados, mas todos do mesmo tamanho.  
-S„o vetores formados por dataframes, matrizes que permitem que suas colunas tenham diferentes tipos de vari·veis <chr> <int> <flt> <fctr> <Date> etc.  
+Generaliza√ß√£o dos vetores no sentido de que uma data.frame √© uma cole√ß√£o de objetos de tipos os mais variados, mas todos do mesmo tamanho.  
+S√£o vetores formados por dataframes, matrizes que permitem que suas colunas tenham diferentes tipos de vari√°veis <chr> <int> <flt> <fctr> <Date> etc.  
 Usados para guardar tabelas de dados de um problema qualquer.  
 Suas colunas tem nomes e podem conter dados de tipos diferentes, diferindo de uma matriz.  
-Cada registro da BD corresponde a uma linha da data.frame e cada coluna a uma vari·vel vari·vel, campo ou propriedade das observaÁıes coletadas.  
-Podem ser criadas pela funÁ„o data.table()
+Cada registro da BD corresponde a uma linha da data.frame e cada coluna a uma vari√°vel vari√°vel, campo ou propriedade das observa√ß√µes coletadas.  
+Podem ser criadas pela fun√ß√£o data.table()
 
 ```{r}
 
@@ -685,25 +715,25 @@ rs
 rs$f_altura<-hcat
 rs
 
-# A ideia È criar um list de 10 posiÁıes para receber as amostras de 10 semanas
+# A ideia √© criar um list de 10 posi√ß√µes para receber as amostras de 10 semanas
 
-# no intervalor È possÌvel criar um data.frame similar e editar para carregar os dados da aula passada e desta aula
+# no intervalor √© poss√≠vel criar um data.frame similar e editar para carregar os dados da aula passada e desta aula
 
 ```
 
 
 ```{r repetindo_graficos}
 
-# Exibindo essa diferenÁa graficamente
-boxplot(rs$h~rs$sexo, ylab = "altura", xlab="sexo") # homens s„o, em mÈdia, mais alto que as mulheres
-boxplot(rs$p~rs$sexo, ylab = "peso", xlab="sexo") # homens s„o, em mÈdia, mais pesados que as mulheres
+# Exibindo essa diferen√ßa graficamente
+boxplot(rs$h~rs$sexo, ylab = "altura", xlab="sexo") # homens s√£o, em m√©dia, mais alto que as mulheres
+boxplot(rs$p~rs$sexo, ylab = "peso", xlab="sexo") # homens s√£o, em m√©dia, mais pesados que as mulheres
 plot(rs$p~rs$h, ylab = "peso", xlab="altura")
 plot(rs$p~rs$h^2, ylab = "peso", xlab="altura^2")
 
-# Esses gr·ficos corroboram uma HipÛtese de estratificaÁ„o f & m para analisar o IMC?????
-# Duvidar È preciso.
-# Transformar sua d˙vida nums hipÛtese test·vel.
-# E testar adequadamente a HipÛtese **contra** as observaÁıes colhidas no campo.
+# Esses gr√°ficos corroboram uma Hip√≥tese de estratifica√ß√£o f & m para analisar o IMC?????
+# Duvidar √© preciso. Viver n√£o √© preciso.
+# Transformar sua d√∫vida numa hip√≥tese test√°vel.
+# E testar adequadamente a Hip√≥tese **contra** as observa√ß√µes colhidas no campo.
 
 boxplot(rs$IMC~rs$sexo, ylab = "IMC", xlab="sexo")
 
