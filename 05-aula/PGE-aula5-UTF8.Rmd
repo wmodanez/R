@@ -2,10 +2,10 @@
 title: 'Noções Básicas de R - Aula 5'
 in_header: \usepackage{graphicx, color, verbatim, fancyvrb, setspace, amsfonts, amsmath,amssymb}
 output:
-  html_document: default
+  pdf_document: default
   slidy_presentation: default
   ioslides_presentation: default
-  pdf_document: default
+  html_document: default
   beamer_presentation: default
   word_document: default
 fig_caption: yes
@@ -16,7 +16,7 @@ Exemplo de uso de R + Markdown + knitr
 Prof. Dr. Cleuler Barbosa das Neves  
 [currículo.lattes](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4786159E2)
 
-AULA N. 04 - OBJETOS: *VETORES*, **MATRIZES**, **DATA.FRAME**, ARRAYS, **LIST**, *DATE*, TS, LM etc.
+AULA N. 05 - EXERCÍCIOS COM OBJETOS: *VETORES*, **MATRIZES**, **DATA.FRAME**, ARRAYS, **LIST**, *DATE*, TS, LM, GDAL etc.
   
 #**R** é uma Linguagem **funcional** orientada para **objetos**!
 
@@ -29,11 +29,16 @@ AULA N. 04 - OBJETOS: *VETORES*, **MATRIZES**, **DATA.FRAME**, ARRAYS, **LIST**,
 #[================================================]
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(eval = TRUE, echo = TRUE)
+# Vair exibir na saída um .pdf ou .html com o código (eval=T) e o seu resultado (echo=T), em sequência.
 ```
 
 
 ```{r pastas_e_bibliotecas}
+#####################################################
+# Carregando packages já instalados na workstation
+#####################################################
+
 # As "duas" primeiras linhas de comando de um script em R (p. 13) deveriam ser:
 
 # A 1ª Linha de comando:
@@ -48,9 +53,9 @@ getwd()    # Exibe  o Diretório de Trabalho, no caso o da Pasta Pessoal, execut
 code<-0 # somente irá resetar a Job Area se code == 1
 if(code==1) rm(list=ls()) # Remove toda a list de variáveis da Job Area, i. e., dá um reset na Environment
 
-#[=========================================================================]
-#[                   Pacotes do System Library                             ]
-#[=========================================================================]
+#[================================================================]
+#[                   Pacotes do System Library                    ]
+#[================================================================]
 
 #Pacotes de importação de BD
 #para ativar um pacote do System Library (vem c/a instalação do R): 2.000 f's
@@ -58,9 +63,9 @@ library(foreign) # argumento não precisa das aspas
 # Para carregar Base de Dados dos aplicativos:
 # Minitab, S, SAS, SPSS, Stata, Systat, Weka, dBase ...
 
-#[=========================================================================]
-#[                    Pacotes da User Library                              ]
-#[=========================================================================]
+#[================================================================]
+#[                    Pacotes da User Library                     ]
+#[================================================================]
 
 #P/instalar um pacote da web (CRAN) basta executar install.packages() 1 vez
 #  [Default] [64-bit] C:\Program Files\R\R-3.5.0
@@ -114,6 +119,7 @@ library(memisc) # pacote para manipulação de pesquisa de dados (p. 66, 89)
 
 #install.packages("rgdal") # para exibição de Mapas e dados espacializados
 library(rgdal) # R_SC: cap. 11- Mapas (p. 134-139)
+#<obj>: <gdal> = Geospatial Data Abstraction Library
 # Requer a instalação do pacote sp
 #install.packages("sp")
 library(sp)
@@ -160,6 +166,24 @@ library(descr)
 library(gdata)
 library(memisc)
 
+#install.packages("gsubfn")
+#install.packages("proto")
+#install.packages("RSQLite")
+#install.packages("lattice")
+#install.packages("MASS")
+#install.packages("quantmod")
+#install.packages("xts")
+#install.packages("TTR")
+
+library("gsubfn")
+library("proto")
+library("RSQLite")
+library("lattice")
+library("MASS")
+library("quantmod")
+library("xts")
+library("TTR")
+
 # Um *look* na sua **Estação de Trabalho** desta sessão do **R** versão 3.4.3
 sessionInfo()
 getRversion()
@@ -168,9 +192,9 @@ getRversion()
 
 # Os interessados em compreender o pacote Knitr *Knitr: a general-purpose package for dynamic report generation in R* -- R package version 1.5 devem [acessar](http://yihui.name/knitr)
 
-#[=========================================================================]
-#[                                                                         ]
-#[=========================================================================]
+#[================================================================]
+#[                                                                ]
+#[================================================================]
 ```
 Os interessados em assinar a *Lista Brasileira do R* -- [R-br] da **UFPR** devem [clicar aqui](http://listas.inf.ufpr.br/cgi-bin/mailman/listinfo/r-br)  
   
@@ -189,11 +213,12 @@ Seus principais tipos são:
 > <Date>  
 > <ts>  
 > <lm>  
+> <gdal>  
 O valor **NA** pode ser armazenado como valor NULL em qualquer um desses tipos.  
-###########################################################################################
+###################################################################
 # CUIDADO PORQUE UM ÚNICO **NA** NUMA BD PROPAGA SUA CAPACIDADE DE IMPEDIR QUE CÁLCULOS DE   
 # ESTATÍSTICA SEJAM PROCESSADOS  
-###########################################################################################
+###################################################################
 Os tamanhos uniformes desses <vctr>'s, seus lengths(), poderão servir para informar um dos parâmetros da dimensão da matriz resultante dessa união de conjuntos, ou seja, poderá servir para informar ou o número de linhas (byrows = TRUE) ou o número de colunas (byrows = FALSE) da matriz.  
 Esses parâmetros poderão ser repassados como argumento da função dim(<vctr>)<-c(nrow, ncol), que **transforma** o <vctr> que lhe é passado como argumento em uma matriz <mtrx>.  
 Se o número de elementos de <vctr>, length(<vctr>), é igual a nrow*ncol, então o vetor argumento transformar-se-á numa matriz preenchida coluna por coluna (by = col é seu default).  
@@ -301,9 +326,9 @@ dez_semanas[2]
 r[,-5]
 ```
 
-# Exercícios - Para Resolução em Sala
+# Exercícios - Para Resolução em Sala com o uso de vetores
 
- Refletir e responder às seguintes questões *pragmáticas* com o uso de matrizes:  
+ Refletir e responder às seguintes questões *pragmáticas* com o uso de vetores:  
  1) Qual a altura média da sua turma de R na aula do dia 11 abr. 2018?  
  2) Qual o peso médio da sua turma de R na aula do dia 11 abr. 2018?  
  3) Qual o número médio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018?
@@ -318,42 +343,71 @@ library(foreign)
 library(descr)
 library(readxl)
 library(gdata)
+library(dplyr)
 getwd()
-dados<-read.csv2(file = "Tabela-pesos-altura-corrigida3.csv", header = TRUE, sep = ";", quote = "\"", dec = ".", fill = TRUE)
-dados
-#View(dados)
+dados.teste<-read.csv2(file = "Tabela-pesos-altura-corrigida3.csv", header = TRUE, sep = ";", quote = "\"", dec = ".", fill = TRUE)
+dados.teste
+#View(dados.teste)
 dez_semanas
 dez_semanas+7
-colnames(dados[3:12])<-as.character.Date(dez_semanas+7)
-dados
-names(dados)
-colnames(dados)
+colnames(dados.teste[3:12])<-as.character.Date(dez_semanas+7)
+dados.teste
+names(dados.teste)
+colnames(dados.teste)
 ```
+
+#Data.frame e a biblioteca dplyr
+
+Data.frame é estrutura de dados chave para análise de dados no R.  
+A básica estrutura de dados de um data.frame é: uma observação por linha 
+e cada coluna representa uma variável.  
+Importante saber manipular data frames; há boas ferramentas para lidar com eles.  
+
+A biblioteca *dplyr* é desenhada para facilitar a resolução de problemas de manipulação de dados e fornece um conjunto de rotinas otimizadas especificas para lidar com data.frames
+
+
+#Gramática da biblioteca dplyr
+
+Uma contribuição da biblioteca dplyr é a "gramática" para  manipulação de data.frames.  
+Com essa gramática os códigos ficam mais fáceis de ser entendidos por programadores.  
+Além disso, as funções dessa bibioteca são  rápidas, muitas delas escritas em C++.  
+Alguns dos "verbos" chaves que podem ser encontrados na biblioteca dplyr são:  
+
+* select: retorna um subconjunto de colunas de um data.frame, usando uma notação flexivel;
+* filter: extrair um subconjunto de linhas de um data.frame baseado em condições lógicas;
+* reordenar: reordenar linhas de um data.frame;  
+* renomear: renomear variáveis in um data frame;  
+* mutar: adicionar novas variáveis ou transformar colunas existentes;  
+* sumarizar: gerar estatísticas resumos de variáveis diferentes nos data.frames, possivelmente dentro de um estrato.  
+* %>% o operador "pipe" é usado para conectar multiplas ações dentro de um pipeline.  
+
 
 ```{r importa_salva_bd}
 library(foreign)
 library(descr)
 library(readxl)
 library(gdata)
+library(dplyr)
 getwd()
-setwd("~/aulas")
+#setwd("~/aulas") # The working directory was changed to /home/modanez/repositorios/aulas inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks.
 getwd()
 dados<-read.csv2(file = "Tabela-pesos-altura.csv", header = TRUE, sep = ";", quote = "\"", dec = ".", fill = TRUE)
 dados
-View(dados)
+#View(dados)
 names(dados)
-dados<-dados[-(16:32),]
+#dados<-dados[-(16:32),]
 save(dados,file = "dados.RData")
 ```
 
 ```{r carrega_bd}
 load("dados.RData")
 dados
-dados<-edit(dados)
+#dados<-edit(dados) # Error in edit : Editing of data frames and matrixes is not supported in RStudio.
+#basta executar essa linha de comando no RGui(64-bit) que lá é possível editar e introduzir ou corrigir dados diretamente na BD
 ```
 
 
-```{r Estatística Descritiva na Sala de Aula}
+```{r Estatística Descritiva em Sala de Aula}
 # Invocando as funções mean() e sd() para uma <var> <vector> <num>
 #1) Média e Desvio Padrão (#5) das alturas dos alunos:
 hm<- mean(h, na.rm=TRUE)
@@ -367,13 +421,13 @@ h[h<hm-hDP | h>hm+hDP]
 nomes[h<hm-hDP | h>hm+hDP] # Eis os outliers da estatura de nossa turma.
 
 #2) Média e Desvio Padrão (#5) dos pesos dos alunos:
-pm<- mean(p, na.rm=TRUE) # É uma uma turma de magros!!! Conclusão precipitada?
-pDP<-sd(p, na.rm=TRUE)
+pm<- mean(p1, na.rm=TRUE) # É uma uma turma de magros!!! Conclusão precipitada?
+pDP<-sd(p1, na.rm=TRUE)
 # A média do peso da turma no dia 11 abr. 2018 é de 69.5 Kg
 # O Desvio Padrão dessas 13 obsevrações de peso   = 12.9 Kg
 #6) Quem está abaixo e acima da média mais ou menos 1 Desvio Padrão?
-p[p<pm-pDP | p>pm+pDP]
-nomes[p<pm-pDP | p>pm+pDP] # Eis os outliers da nossa turma.
+p1[p1<pm-pDP | p1>pm+pDP]
+nomes[p1<pm-pDP | p1>pm+pDP] # Eis os outliers da nossa turma.
 
 #3) Número médio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018 e seu Desvio Padrão (#5)
 mean(length(nomes))
@@ -392,7 +446,7 @@ nomes[tam_nomes<tam_nomes_media-tam_nomes_DP | tam_nomes>tam_nomes_media+tam_nom
 
 #7) Cálculo do IMC de cada observação do dia 11 abr. 2018.
 #O cálculo do IMC é feito dividindo o peso (em quilogramas) pela altura (em metros) elevada ao quadrado.
-IMC<-p/h^2
+IMC<-p1/h^2
 IMC
 IMC_m<- mean(IMC, na.rm=TRUE) # É uma uma turma de magros!!! Conclusão precipitada?
 IMC_m # = 25.17 Kg/m2     # O IMC médio da turma indica ligeiramente acima do peso normal
@@ -401,9 +455,9 @@ IMC_DP# =  3.61 Kg/m2
 IMC[IMC<18.5 | IMC>=25]
 nomes[IMC<18.5 | IMC>=25] # Revelar ou não revelar. Eis a questão!!!!!!!!!!!!!!!!!!!!!!!!!!
 # cut() Convert Numeric <num> to Factor <fctr>
-###########################################################################################
+###################################################################
 # CUIDADO PORQUE UM ÚNICO ERRO DE SINTAXE FAZ COM QUE O COMPILADOR INTERROMPA A EXECUÇÃO DO SRCIPT (CÓDIGO FONTE)  #
-###########################################################################################
+###################################################################
 ``` 
  
  Exercíco da Aula n. 2:
@@ -411,12 +465,12 @@ nomes[IMC<18.5 | IMC>=25] # Revelar ou não revelar. Eis a questão!!!!!!!!!!!!!
 
 ```{r reta}
 
-###########################################################################################
+###################################################################
 # TENTATIVAS E  ERROS PARA GERAR UM GRÁFICO y=f(x)=a.x + b 
 #
 # IMPORTANDO UM ARQUIVO FEITO PELO BERNARD E CONVERTENDO-O DE UTF-8 PARA WINDOWS-1252
-#
-###########################################################################################
+# Bem melhor é usar o Notepad++
+###################################################################
 
 library(descr)
 library(stats)
@@ -498,7 +552,7 @@ Exercícios remanescentes da Aula n. 01:
 # Que apresenta vávios Levels (níveis)
 # Comumente cada nível recebe um nome gerando um conjunto denominado Labels
 
-# Exemplo: No nosso estudo de caso seria interessante separar os dados amostrado segundo o sexo biológico de cada obsevração, porque biologicamente seres humanos XY tam estatura média superioe às dos XX. Logo também o IMC deve ser tratado para cada subgrupo separadamente.
+# Exemplo: No nosso estudo de caso seria interessante separar os dados amostrado segundo o sexo biológico de cada obsevração, porque biologicamente seres humanos XY tem estatura média superior às dos XX. Logo também o IMC deve ser tratado para cada subgrupo separadamente.
 
 s<-c("m","m","m","m","f","m","m","f","f","m","f","m","m")
 s # um <vctr> do tipo <chr>
@@ -526,6 +580,7 @@ hcat <- cut(h,c(0,1.6,1.7,2.0),labels = c("Baixo","Médio","Alto"))
 # função cat() Convert Numeric to Factor
 str(hcat)
 dput(hcat)
+s<-dados$Sexo
 table(hcat,s)
 hm
 ct<-table(hcat,s)
@@ -543,15 +598,14 @@ mean(h[s=="m"], na.rm=TRUE) # é média da estatura do sexo masculino = 1.72 m
 
 # Exibindo essa diferença graficamente
 boxplot(h~s, ylab = "altura") # homens são, em média, mais alto que as mulheres
-boxplot(p~s, ylab = "peso") # homens são, em média, mais pesados que as mulheres
+boxplot(p1~s, ylab = "peso") # homens são, em média, mais pesados que as mulheres
 
 # Esses gráficos corroboram uma Hipótese de estratificação f & m para analisar o IMC?????
-# Duvidar é preciso.
-# Transformar sua dúvida nums hipótese testável.
+# Duvidar é preciso. Viver não é preciso.
+# Transformar sua dúvida numa hipótese testável.
 # E testar adequadamente a Hipótese **contra** as observações colhidas no campo.
 
 boxplot(IMC~s, ylab = "IMC")
-
 ```
 
 
@@ -665,27 +719,30 @@ São extensões das matrizes para mais do que duas dimensões que permitem, desd
 # Construindo um exemplo
 a<- array(1:50, dim = c(2,5,5))
 a
-r[,-5]
-rs<-array(dim = c(13,5,10))
+r[,-5] # Não exibe a quinta coluna, ou seja, a variável deltap
+rm(rs)
+rs<-array(dim = c(15,5,10))
 rs
-rs[,,1]<-r # Transaforma um array tipo logic num numeric.
+rs[,,1]<-r # Transforma um array tipo logic num numeric.
 rs[,-5,]
 nomes
 rownames(rs[,,1:10])<-nomes
+#View(rs)
 colnames(rs[,,1:10])<-c("altura", "peso","IMC","peso_max","deltap")
-rs[,,1] # As funções rownames e colnames não funcionam com um array.
-rs<-array(r,dim = c(13,5,10))
+#View(rs)
+rs[,,1] # As funções rownames e colnames não funcionam como esperado em um array; nem é preciso imprimir todo o <obj> rs para constatar isso
+#rs<-array(r,dim = c(15,5,10))
 rs # o o bjeto array não herda os nomes de colunas e linhas da matriz r.
 #names(rs)[,,1:10]<-c(nomes,c("altura", "peso","IMC","peso_max","deltap"))
 #names(rs)[-(1:13),,1:10]<-c("altura", "peso","IMC","peso_max","deltap")
 #names(rs)<-c(nomes,c("altura", "peso","IMC","peso_max","deltap"), as.character.Date(dez_semanas)) # Não funcionou a contento
-rs
+
 # Talvez dimnames(x) <- value possa funcionar; é preciso testar
 dim(rs)
 as.character.Date(dez_semanas)
 #dimnames(rs) <- c(nomes,c("altura", "peso","IMC","peso_max","deltap"), as.character.Date(dez_semanas))
 # gerou o seguinte erro: "Error in dimnames(rs) <- c(nomes, c("altura", "peso", "IMC", "peso_max",  : 'dimnames' must be a list"
-# Ou seja, melhot partir para o uso de data.frame e de list
+# Ou seja, melhor partir para o uso de data.frame e de list
 ```
 
 
@@ -741,7 +798,7 @@ iris$Renato = TRUE
 
 iris
 
-rs<-data.table(nomes,h,p,IMC,pmax,deltap)
+rs<-data.table(nomes,h,p1,IMC,pmax,deltap)
 rs[,-6]
 rs[,-1]
 nrow(rs)
@@ -763,9 +820,10 @@ rs
 
 # Exibindo essa diferença graficamente
 boxplot(rs$h~rs$sexo, ylab = "altura", xlab="sexo") # homens são, em média, mais alto que as mulheres
-boxplot(rs$p~rs$sexo, ylab = "peso", xlab="sexo") # homens são, em média, mais pesados que as mulheres
-plot(rs$p~rs$h, ylab = "peso", xlab="altura")
-plot(rs$p~rs$h^2, ylab = "peso", xlab="altura^2")
+boxplot(rs$p1~rs$sexo, ylab = "peso", xlab="sexo") # homens são, em média, mais pesados que as mulheres
+plot(rs$p1~rs$h, ylab = "peso", xlab="altura")
+rs$h2<-rs$h^2
+plot(rs$p1~rs$h2, ylab = "peso", xlab="altura^2")
 
 # Esses gráficos corroboram uma Hipótese de estratificação f & m para analisar o IMC?????
 # Duvidar é preciso. Viver não é preciso.
@@ -773,6 +831,132 @@ plot(rs$p~rs$h^2, ylab = "peso", xlab="altura^2")
 # E testar adequadamente a Hipótese **contra** as observações colhidas no campo.
 
 boxplot(rs$IMC~rs$sexo, ylab = "IMC", xlab="sexo")
+```
 
+
+# Exercícios - Para Resolução em Sala com o uso de matrizes
+
+ Refletir e responder às seguintes questões *pragmáticas* com o uso de matrizes:  
+ 1) Qual a altura média da sua turma de R na aula do dia 11 abr. 2018?  
+ 2) Qual o peso médio da sua turma de R decorrente das observações registradas nas aulas desde o dia 11 abr. 2018?  
+ 3) Qual o peso médio de cada aluno da sua turma de R decorrente das observações registradas nas aulas desde o dia 11 abr. 2018?
+ 4) Qual o número médio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos desde o dia 11 abr. 2018?  
+ 5) Qual o desvio padrão dessas médias encontradas?  
+ 6) Quem está abaixo e acima da média de peso mais ou menos 1 Desvio Padrão? Qual o resultado para 0.5 e 1.5 DP?
+ 7) Calcular o IMC de cada observação desde o dia 11 abr. 2018. Encontre sua média e dp?
+ 8) Quem está abaixo e acima da média do IMC mais ou menos 1 Desvio Padrão? Qual o resultado para 0.5 e 1.5 DP?  
+
+```{r media_dp}
+#Criando uma função para encontrar a média e o DP de um <vctr> ou de uma <mtrx>.
+#Esses valores retornarão após o último elemento do <vctr>
+#Se for uma <mtrx> retornarão por linha (row=TRUE) após sua última coluna.
+#ou por coluna (col=TRUE) após a última linha da <mtrx>.
+media_dp<-function(m,dp=TRUE,row=TRUE,col=TRUE) {
+  if(is.vector(m)) {
+    n<-length(m)
+    m[n+1]<-mean(m,na.rm = TRUE)
+    if(dp==TRUE) {
+      m[n+2]<-sd(m[1:n],na.rm = TRUE)
+    }#fim do if(dp==TRUE)
+    return(m)
+  #fim do if is.vector(m)
+  } else {
+    l<-nrow(m)
+    c<-ncol(m)
+    
+  if(is.matrix(m)) {
+    if(row==TRUE) {
+      # A linha seguinte é para evitar o erro: Error in `[<-`(`*tmp*`, i, c + 1, value = 79.8) : subscript out of bounds
+      m<-cbind(m,matrix(data = NA, nrow = l, ncol = 2, byrow =   FALSE,dimnames = NULL))
+      for (i in 1:l) {
+        m[i,c+1]<-mean(m[i,],na.rm = TRUE)
+        if(dp==TRUE){m[i,c+2]<-sd(m[i,1:c],na.rm = TRUE)}#fim do if
+      }#fim do for para calcular média e DP de cada linha
+    }#fim do if (row==TRUE)
+    if(col==TRUE) {
+      # A linha seguinte é para evitar o erro: Error in `[<-`(`*tmp*`, i, c + 1, value = 79.8) : subscript out of bounds
+      m<-rbind(m,matrix(data = NA, nrow = 2, ncol = c, byrow =   FALSE,dimnames = NULL))
+      for (j in 1:c) {
+        m[l+1,j]<-mean(m[,j],na.rm = TRUE)
+        if(dp==TRUE){m[l+2,j]<-sd(m[1:l,j],na.rm = TRUE)}#fim do if
+      }#fim do for para calcular média e DP de cada coluna
+    }#fim do if (col==TRUE)
+    return(m)
+  }#fim do if is.matrix(m)
+ }#fim do else do if is.vector(m)
+}#fim da function media_dp()
+```
+
+# Linguagem R: importância de explorar a sua funcionalidade e a sua orientação a objeto
+
+```{r chamando a função media_dp}
+getwd()
+load("dados.RData")
+names(dados)<-tolower(names(dados)) # recodifica os nomes das variáveis para minúsculas
+
+#Inspecionando os dados da nossa BD
+#Calculando a altura média da turma e seu desvio padrão
+dados$altura
+dados$altura[dados$sexo=="m"] # são 10 pessoas do sexo masculino
+dados$altura[dados$sexo=="f"] # são  5 pessoas do sexo feminino
+media_dp(m = dados$altura,dp = TRUE)
+media_dp(m = dados$altura[dados$sexo=="m"],dp = TRUE)
+media_dp(m = dados$altura[dados$sexo=="f"],dp = TRUE)
+
+media_dp(m = dados$x2018.04.11,dp = TRUE)
+media_dp(m = dados$x2018.04.18,dp = TRUE)
+media_dp(m = dados$x2018.04.25,dp = TRUE)
+#Observa-se uma forte oscilação na média de peso da turma em cada observação, em razão das faltas sistemáticas de alguns alunos
+# Como evitar que esse fato interfira na tentativa de observar se uma simples recomendação de adoção de uma dieta do meio, do terço ou da sesma é ou não capaz de alterar a média do peso da turma ao longo de um curso de R com 10 semanas de duração?
+
+# verificando o peso médio e o DP para cada aluno desde a 2ª aula
+media_dp(m = as.matrix(dados[,4:6]),dp = TRUE, row = TRUE, col = FALSE) # é necessário transformar dados <data.frame> em <mtrx> porque senão o teste is.matrix resultará em FALSE na função chamada
+teste.peso.obs<-media_dp(m = as.matrix(dados[,4:6]),dp = TRUE, row = TRUE, col = FALSE)
+
+teste.peso.aula<-media_dp(m = as.matrix(dados[,4:6]),dp = TRUE, row = FALSE, col = TRUE)
+teste.peso.aula
+```
+
+```{r resolvendo exercios com matrix}
+#3) Número médio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018 e seu Desvio Padrão (#5)
+mean(length(dados$nome))
+sd(mean(length(dados$nome))) # retorna um NA. Por que?
+dados$nome
+tam_nomes<-length(dados$nome) # cuidado porque retorna o comprimento do vetor names = 15L <fctr>!!!
+tam_nomes<-nchar(as.vector(dados$nome), keepNA = NA)
+tam_nomes
+tam_nomes_media<-mean(tam_nomes)
+tam_nomes_media
+tam_nomes_DP   <-sd(tam_nomes)
+tam_nomes_DP
+#6) Quem está abaixo e acima da média mais ou menos 1 Desvio Padrão?
+tam_nomes[tam_nomes<tam_nomes_media-tam_nomes_DP | tam_nomes>tam_nomes_media+tam_nomes_DP]
+nomes[tam_nomes<tam_nomes_media-tam_nomes_DP | tam_nomes>tam_nomes_media+tam_nomes_DP] # Eis os nomes daqueles com tamanhos de nomes outliers da nossa turma.
+
+#7 e 8) Cálculo do IMC de cada observação desde o dia 11 abr. 2018.
+#O cálculo do IMC é feito dividindo o peso (em quilogramas) pela altura (em metros) elevada ao quadrado.
+IMC<-as.matrix(dados[,4:6]/dados$altura^2)
+media_dp(m = IMC,dp = TRUE, row = TRUE, col = FALSE)
+teste.IMC<-media_dp(m = IMC,dp = TRUE, row = TRUE, col = FALSE)
+IMC_m<- mean(teste.IMC[,(ncol(IMC)+1)], na.rm=TRUE) # É uma uma turma de magros!!! Conclusão precipitada?
+IMC_m # = 25.17 Kg/m2 (2ª aula) # O IMC médio da turma (4ª aula) = 25.34487 indica que "ela está ligeiramente acima do peso normal" [?] - Cuidado para não "reificar" sua unidade populacional
+IMC_DP<-sd(teste.IMC[,(ncol(IMC)+1)], na.rm=TRUE)
+IMC_DP# =  3.61 Kg/m2 (2ª aula); 4.49 Kg/m2 (2ª a 4ª aulas)
+IMC[IMC<18.5 | IMC>=25]
+dados$nome[IMC<18.5 | IMC>=25] # Há um problema lógico nessa expressão? Qual seria?            !!!!!!!!!!!!!!!!!!!!!!!!!!
+```
+
+```{r graficos}
+boxplot(dados$altura~dados$sexo, ylab = "altura", xlab="sexo") # homens são, em média, mais alto que as mulheres
+boxplot(teste.peso.obs[,4]~dados$sexo, ylab = "peso", xlab="sexo") # homens são, em média, mais pesados que as mulheres
+plot(teste.peso.obs[,4]~dados$altura, ylab = "peso", xlab="altura")
+
+dados.teste<-cbind(dados,teste.peso.obs[,4:5],teste.IMC[,4:5])
+
+boxplot(dados.teste$altura~dados.teste$sexo, ylab = "altura", xlab="sexo") # homens são, em média, mais alto que as mulheres
+boxplot(dados.teste[,13]~dados.teste$sexo, ylab = "peso", xlab="sexo") # homens são, em média, mais pesados que as mulheres
+plot(dados.teste[,13]~dados.teste$altura, ylab = "peso", xlab="altura")
+
+boxplot(dados.teste[,15]~dados.teste$sexo, ylab = "IMC", xlab="sexo") # homens são, em média, mais alto que as mulheres
 ```
 
