@@ -1,5 +1,5 @@
 #Script desenvolvido para criar graficos
-#Criar funÁ„o da equaÁ„o da reta > y = ax+b
+#Criar fun√ß√£o da equa√ß√£o da reta > y = ax+b
 #------------------Parametros------------------
 #     a = Coeficiente linear
 #     b = Coeficiente Angular
@@ -25,6 +25,6 @@ print(y) #Mostrar os valores do Eixo Y
 #     ylab = Nome do Eixo Y
 #     xlab = Nome do Eixo X
 #     type = Tipo de plotagem > l = linha,p = pontos, h = histograma
-plot(x,y,main='Gr·fico Curso R',ylab='Eixo Y',xlab='Eixo X',type='o')
+plot(x,y,main='Gr√°fico Curso R',ylab='Eixo Y',xlab='Eixo X',type='o')
 
 
