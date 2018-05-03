@@ -1,4 +1,4 @@
-# Instalando os principais pacotes para um uso b·sico da Linguagem R
+# Instalando os principais pacotes para um uso b√°sico da Linguagem R
 
 #install.packages("memisc")
 library(memisc)
@@ -16,7 +16,7 @@ library(ggplot2)
 library(knitr)
 #install.packages("rgdal")
 library(rgdal)
-#N„o preciso o install.packages("datasets") porque integra o System Library
+#N√£o preciso o install.packages("datasets") porque integra o System Library
 library(datasets)
 #install.packages("data.table")
 library(data.table)
@@ -32,18 +32,18 @@ setwd("C:/Users/cleuler-bn/Documents/R_CS")
 #Apagar todos os objetos da memoria - reset da Environment Area
 rm(list=ls())
 
-linear <- function(a, b, x) # InÌcio da definiÁ„o da funÁ„o linear (reta) num plano cartesiano y = a.x + b
-  # a = par‚metro que indica o coeficiente angular da reta
-  # b = par‚metro que indica o coeficiente linear  da reta
-  # x = par‚metro que indica o conjunto de valores em a funÁ„o ser· aplicada
+linear <- function(a, b, x) # In√≠cio da defini√ß√£o da fun√ß√£o linear (reta) num plano cartesiano y = a.x + b
+  # a = par√¢metro que indica o coeficiente angular da reta
+  # b = par√¢metro que indica o coeficiente linear  da reta
+  # x = par√¢metro que indica o conjunto de valores em a fun√ß√£o ser√° aplicada
 {
   y<- a * x + b
   y
-} #################  Final da definiÁ„o da funÁ„o linear, que retorna o valor de y=x, se x È um vetor ou matriz real
+} #################  Final da defini√ß√£o da fun√ß√£o linear, que retorna o valor de y=x, se x √© um vetor ou matriz real
 
-# Invocando a funÁ„o linear para uma <var> <vector> <num>
+# Invocando a fun√ß√£o linear para uma <var> <vector> <num>
 a<-1
-b<-0        # Replica a funÁ„o identidade 
+b<-0        # Replica a fun√ß√£o identidade 
 x<--1:10
 linear(a,b,x)
 
@@ -63,7 +63,7 @@ x<-c(1,2,3,4,5)
 linear(a,b,x)
 
 ####################################################################################################################
-# TENTATIVAS E  ERROS PARA GERAR UM GR¡FICO y=f(x)=a.x + b #
+# TENTATIVAS E  ERROS PARA GERAR UM GR√ÅFICO y=f(x)=a.x + b #
 ####################################################################################################################
 
 a<-1/2
