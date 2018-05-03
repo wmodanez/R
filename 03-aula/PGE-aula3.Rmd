@@ -32,7 +32,6 @@ AULA N. 03 - OBJETOS: VETORES, MATRIZES, DATA.FRAME, ARRAYS, LIST, DATE, TS etc.
 #setwd("~") # Aponta o Diretório de Trabalho para a Pasta Pessoal e subpasta em que se encontra o arquivo deste script PGE-aula3.Rmd: "~/../Documents/R_CS/Aula3"
 # Esse comando exibe a seguinte mensagem de alerta importante: "The working directory was changed to C:/Users/M/Documents inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks"
 getwd()    # Exibe  o Diretório de Trabalho, no caso o da Pasta Pessoal, executando uma linha de comando na janela Terminal da Console Area: "C:/Users/M/Documents/R_CS/Aula3"
-setwd("~/../Documents/R_CS/Aula3") # Produz o mesmo efeito do código anterior
 getwd()
 
 # A 2ª Linha de comando: é um exemplo do uso de **funções compostas** em Linguagem **R**
@@ -150,7 +149,6 @@ Exemplos de uso dessa função.
 
 ```{r criando vetores vazios}
 #getwd()
-#setwd("~/../R_CS/Aula3")
 
 x <- vector(mode = "character", length = 5)
 y <- vector(mode = "numeric", length = 7)
