@@ -254,7 +254,7 @@ Seus *argumentos* e *defaults* são:(data = NA, nrow = 1, ncol = 1, byrow = FALS
  6) Calculado o IMC de cada observação desde o dia 11 abr. 2018 encontre sua média e dp?  
  7) As distribuições da altura, do peso e do IMC observados podem ser consideradas **normais** ou gaussianas? Construa histogramas para verificar se elas apresentam a forma de sino.  
  8) Como **padronizar** a distribuição da altura, do peso e do IMC observados?  
- 9) Realize um teste de hipótese para verificar se há uma **diferença estatísticamente significante** entre a altura, o peso e o IMC das pessoas do sexo feminino e masculino que foram observadas desde a aula do dia 11 abr. 2018. Se houver, indique o respectivo *Intervalo de Confiança (IC)*, a *margem de erro (E)* e o valor de *Z crítico* ($Z\_frac{\alpha} {2}) para cada variável observada.  
+ 9) Realize um teste de hipótese para verificar se há uma **diferença estatísticamente significante** entre a altura, o peso e o IMC das pessoas do sexo feminino e masculino que foram observadas desde a aula do dia 11 abr. 2018. Se houver, indique o respectivo *Intervalo de Confiança (IC)*, a *margem de erro (E)* e o valor de *Z crítico* ($Z_\frac{\alpha} {2}$) para cada variável observada.  
  10) Seria *necessário* realizar esse mesmo teste de hipótese com a distribuição t de studente? Justifique.
 
 
@@ -327,37 +327,23 @@ NA,
 81.5)
 dados
 
-#dados$X2018.05.09<-c(NA,
+dados$X2018.05.09<-c(NA,
+63.5,
+80.0,
+81.8,
 NA,
-78.1,
-84.0,
-NA,
-NA,
-48.5,
-NA,
-NA,
-55.5,
-73.5,
-59.9,
-50.8,
-81.4,
-81.5)
+82.1,
+48.6,
+82.3,
+56.5,
+56.4,
+72.2,
+61.0,
+50.6,
+83.0,
+81.3)
 
-#dados$X2018.05.16<-c(NA,
-NA,
-78.1,
-84.0,
-NA,
-NA,
-48.5,
-NA,
-NA,
-55.5,
-73.5,
-59.9,
-50.8,
-81.4,
-81.5)
+#dados$X2018.05.16<-c(NA,NA,78.1,84.0,NA,NA,48.5,NA,NA,55.5,73.5,59.9,50.8,81.4,81.5)
 save(dados,file = "dados.RData")
 ```
 
@@ -379,7 +365,7 @@ nomes[h<hm-hDP | h>hm+hDP] # Eis os outliers da estatura de nossa turma.
 
 #2) Média e Desvio Padrão (#5) dos pesos dos alunos:
 di<-4
-df<-7
+df<-8
 dados[,di:df]
 peso<-dados[,di:df]
 pm<- apply(peso, 1,mean,na.rm=TRUE) # É uma uma turma de magros!!! Conclusão precipitada?
@@ -396,7 +382,7 @@ mean(length(nomes))
 sd(mean(length(nomes))) # retorna um NA. Por que?
 nomes
 tam_nomes<-length(nomes) # cuidado porque retorna o comprimento do vetor names = 13!!!
-tam_nomes<-nchar(nomes, keepNA = NA)
+tam_nomes<-nchar(as.character(nomes), keepNA = NA)
 tam_nomes
 tam_nomes_media<-mean(tam_nomes)
 tam_nomes_media
@@ -443,25 +429,6 @@ Usados para guardar tabelas de dados de um problema qualquer.
 Suas colunas tem nomes e podem conter dados de tipos diferentes, diferindo de uma matriz.  
 Cada registro da BD corresponde a uma linha da data.frame e cada coluna a uma variável, campo ou propriedade das observações coletadas.  
 Podem ser criadas pela função data.table()
-
-
-```{r repetindo_graficos}
-
-# Exibindo essa diferença graficamente
-boxplot(rs$h~rs$sexo, ylab = "altura", xlab="sexo") # homens são, em média, mais alto que as mulheres
-boxplot(rs$peso~rs$sexo, ylab = "peso", xlab="sexo") # homens são, em média, mais pesados que as mulheres
-plot(rs$peso~rs$h, ylab = "peso", xlab="altura")
-rs$h2<-rs$h^2
-plot(rs$peso~rs$h2, ylab = "peso", xlab="altura^2")
-
-# Esses gráficos corroboram uma Hipótese de estratificação f & m para analisar o IMC?????
-# Duvidar é preciso. Viver não é preciso.
-# Transformar sua dúvida numa hipótese testável.
-# E testar adequadamente a Hipótese **contra** as observações colhidas no campo.
-
-boxplot(rs$IMC~rs$sexo, ylab = "IMC", xlab="sexo")
-```
-
 
 
 ```{r media_dp}
@@ -545,6 +512,24 @@ media_dp(m=as.vector(teste.peso.aula[16,]),dp=TRUE)
 ```
 
 
+```{r repetindo_graficos}
+
+# Exibindo essa diferença graficamente
+boxplot(h~dados$sexo, ylab = "altura", xlab="sexo") # homens são, em média, mais alto que as mulheres
+boxplot(pm~dados$sexo, ylab = "peso", xlab="sexo") # homens são, em média, mais pesados que as mulheres
+plot(pm~h, ylab = "peso", xlab="altura")
+h2<-h^2
+plot(pm~h2, ylab = "peso", xlab="altura^2")
+
+# Esses gráficos corroboram uma Hipótese de estratificação f & m para analisar o IMC?????
+# Duvidar é preciso. Viver não é preciso.
+# Transformar sua dúvida numa hipótese testável.
+# E testar adequadamente a Hipótese **contra** as observações colhidas no campo.
+
+boxplot(IMC_m~dados$sexo, ylab = "IMC", xlab="sexo")
+```
+
+
 ```{r resolvendo exercios com matrix}
 #3) Número médio de caracteres dos prenomes dos alunos da turma de R que mediram seus pesos no dia 11 abr. 2018 e seu Desvio Padrão (#5)
 mean(length(dados$nome))
@@ -570,8 +555,8 @@ IMC_m<- mean(teste.IMC[,(ncol(IMC)+1)], na.rm=TRUE) # É uma uma turma de magros
 IMC_m # = 25.17 Kg/m2 (2ª aula) # O IMC médio da turma (4ª aula) = 25.34487 indica que "ela está ligeiramente acima do peso normal" [?] - Cuidado para não "reificar" sua unidade populacional
 IMC_DP<-sd(teste.IMC[,(ncol(IMC)+1)], na.rm=TRUE)
 IMC_DP# =  3.61 Kg/m2 (2ª aula); 4.49 Kg/m2 (2ª a 4ª aulas)
-IMC[IMC<18.5 | IMC>=25]
-dados$nome[IMC<18.5 | IMC>=25] # Há um problema lógico nessa expressão? Qual seria?            !!!!!!!!!!!!!!!!!!!!!!!!!!
+IMC_m[IMC_m<18.5 | IMC_m>=25]
+dados$nome[IMC_m<18.5 | IMC_m>=25] # Há um problema lógico nessa expressão? Qual seria?            !!!!!!!!!!!!!!!!!!!!!!!!!!
 ```
 
 ```{r graficos}
